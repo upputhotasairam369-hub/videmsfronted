@@ -71,15 +71,18 @@ const AllProductsPage = () => {
     const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-    const { items: apiItems, loading, error } = useSelector((state) => state.products);
+    const { items: apiItems, loading, error, hasFetched } = useSelector((state) => state.products);
 
     const items = useMemo(() => {
-        return (apiItems && apiItems.length > 0) ? apiItems : MOCK_PRODUCTS;
-    }, [apiItems]);
+        // Only fall back to MOCK_PRODUCTS if the API has been called and returned nothing
+        return (apiItems && apiItems.length > 0) ? apiItems : (hasFetched ? [] : MOCK_PRODUCTS);
+    }, [apiItems, hasFetched]);
 
     const useMockData = useMemo(() => {
-        return (!apiItems || apiItems.length === 0);
-    }, [apiItems]);
+        // True only when the API has been called AND returned empty
+        // While loading or before first fetch, we show mock data as a placeholder
+        return hasFetched && (!apiItems || apiItems.length === 0);
+    }, [apiItems, hasFetched]);
 
     // ── Sync state when URL params change ──
     useEffect(() => {
@@ -140,8 +143,9 @@ const AllProductsPage = () => {
         if (selectedCategory !== 'all') params.category = selectedCategory;
         if (selectedSubcategory) params.subcategory = selectedSubcategory;
         if (sortBy !== 'newest') params.sort = sortBy;
-        if (!useMockData) dispatch(fetchProducts(params));
-    }, [dispatch, selectedCategory, selectedSubcategory, sortBy, page, useMockData]);
+        // Always fetch from API — no more mock data guard
+        dispatch(fetchProducts(params));
+    }, [dispatch, selectedCategory, selectedSubcategory, sortBy, page]);
 
     useEffect(() => {
         document.body.style.overflow = isMobileFiltersOpen ? 'hidden' : 'unset';

@@ -34,6 +34,7 @@ const productSlice = createSlice({
     loading: false,
     error: null,
     totalPages: 0,
+    hasFetched: false,
   },
   reducers: {
     updateProductStock: (state, action) => {
@@ -65,6 +66,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
+        state.hasFetched = true;
         // Handle both paginated and direct array responses
         if (Array.isArray(action.payload)) {
           state.items = action.payload;

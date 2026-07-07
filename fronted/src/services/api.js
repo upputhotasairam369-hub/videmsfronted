@@ -16,12 +16,15 @@ const apiClient = axios.create({
   },
 });
 
-// 2. Intercept requests to attach the Auth token
+// 2. Intercept requests to attach the Auth token and bust mobile caches
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  // Cache-busting: append a unique timestamp to every request
+  // Prevents mobile browsers/CDNs from serving stale cached responses
+  config.params = { ...config.params, _t: Date.now() };
   return config;
 });
 
