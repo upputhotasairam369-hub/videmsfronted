@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { fetchProducts } from '../store/slices/productslice';
+import { fetchProducts, invalidateProducts } from '../store/slices/productslice';
 import ProductCard from '../components/product/productcart';
 import LoadingSpinner from '../components/common/lodingspinner';
 import { MOCK_PRODUCTS } from '../utils/mockproducts';
@@ -137,6 +137,11 @@ const AllProductsPage = () => {
     const startIdx = (page - 1) * 20;
     const paginatedProducts = sortedProducts.slice(startIdx, startIdx + 20);
     const calculatedTotalPages = Math.ceil(sortedProducts.length / 20);
+
+    // ── Invalidate cache on mount so a page refresh always fetches fresh data ──
+    useEffect(() => {
+        dispatch(invalidateProducts());
+    }, [dispatch]);
 
     useEffect(() => {
         const params = { page, limit: 20 };

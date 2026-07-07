@@ -4,13 +4,14 @@ import HeroCarousel from '../components/home/herocarousel';
 import PromoBanner from '../components/home/promobanner';
 import CategoryGrid from '../components/home/catergorygrid';
 import ProductGrid from '../components/home/productgrid';
-import { fetchProducts } from '../store/slices/productslice';
+import { fetchProducts, invalidateProducts } from '../store/slices/productslice';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const { items, featured } = useSelector((state) => state.products);
 
   useEffect(() => {
+    dispatch(invalidateProducts());
     dispatch(fetchProducts({ limit: 10, featured: true }));
   }, [dispatch]);
 

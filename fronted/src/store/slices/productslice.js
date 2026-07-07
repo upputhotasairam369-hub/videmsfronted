@@ -37,6 +37,18 @@ const productSlice = createSlice({
     hasFetched: false,
   },
   reducers: {
+    resetProducts: (state) => {
+      state.items = [];
+      state.featured = [];
+      state.currentProduct = null;
+      state.loading = false;
+      state.error = null;
+      state.totalPages = 0;
+      state.hasFetched = false;
+    },
+    invalidateProducts: (state) => {
+      state.hasFetched = false;
+    },
     updateProductStock: (state, action) => {
       const { productId, variantId, availableStock } = action.payload;
       if (state.currentProduct && state.currentProduct._id === productId) {
@@ -100,5 +112,5 @@ const productSlice = createSlice({
   },
 });
 
-export const { updateProductStock } = productSlice.actions;
+export const { resetProducts, invalidateProducts, updateProductStock } = productSlice.actions;
 export default productSlice.reducer;
