@@ -62,12 +62,15 @@ const HeroCarousel = () => {
   };
 
   // 🚀 SMART IMAGE URL BUILDER
-  // This ensures images from Django get the correct localhost:8000 prefix,
-  // but external images (like unsplash) are left alone.
+  // Handles 3 cases: full HTTPS URLs, relative paths from Django, and HTTP→HTTPS upgrade
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '';
-    if (imagePath.startsWith('http')) return imagePath;
-    return `http://localhost:8000${imagePath}`;
+    // Already a full HTTPS URL — use as-is
+    if (imagePath.startsWith('https://')) return imagePath;
+    // HTTP URL from Django serializer — upgrade to HTTPS
+    if (imagePath.startsWith('http://')) return imagePath.replace('http://', 'https://');
+    // Relative path (e.g. /media/banners/...) — prepend the backend origin
+    return `https://videmsbackend-production.up.railway.app${imagePath}`;
   };
 
   if (loading) {
