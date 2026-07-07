@@ -5,10 +5,13 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params, { rejectWithValue }) => {
     try {
+      console.log('🔄 Fetching products with params:', params);
       const response = await productAPI.list(params);
+      console.log('✅ Products fetched successfully:', response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data);
+      console.error('❌ Failed to fetch products:', error.message);
+      return rejectWithValue(error.response?.data || { message: error.message });
     }
   }
 );
@@ -17,10 +20,13 @@ export const fetchProductDetail = createAsyncThunk(
   'products/fetchProductDetail',
   async (slug, { rejectWithValue }) => {
     try {
+      console.log('�� Fetching product detail for slug:', slug);
       const response = await productAPI.detail(slug);
+      console.log('✅ Product detail fetched successfully:', response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data);
+      console.error('❌ Failed to fetch product detail:', error.message);
+      return rejectWithValue(error.response?.data || { message: error.message });
     }
   }
 );
@@ -34,7 +40,8 @@ const productSlice = createSlice({
     loading: false,
     error: null,
     totalPages: 0,
-    hasFetched: false,
+    hasFetched: false, // ⚠️ This is ALWAYS reset, allowing fresh fetches
+    lastFetchTime: null,
   },
   reducers: {
     resetProducts: (state) => {
@@ -45,9 +52,13 @@ const productSlice = createSlice({
       state.error = null;
       state.totalPages = 0;
       state.hasFetched = false;
+      state.lastFetchTime = null;
     },
     invalidateProducts: (state) => {
+      // 🔥 CRITICAL: Reset the cache flag to force a fresh fetch
       state.hasFetched = false;
+      state.items = []; // Clear stale items too
+      state.error = null;
     },
     updateProductStock: (state, action) => {
       const { productId, variantId, availableStock } = action.payload;
@@ -79,6 +90,8 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.hasFetched = true;
+        state.lastFetchTime = Date.now();
+        
         // Handle both paginated and direct array responses
         if (Array.isArray(action.payload)) {
           state.items = action.payload;
@@ -97,9 +110,13 @@ const productSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || 'Failed to fetch products';
+        // ⚠️ Don't set hasFetched to true on error, allowing retry
+        state.hasFetched = false;
+        state.items = []; // Clear any stale data
       })
       .addCase(fetchProductDetail.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchProductDetail.fulfilled, (state, action) => {
         state.loading = false;
