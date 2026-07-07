@@ -2,7 +2,7 @@
   "buildCommand": "cd fronted && npm install && npm run build",
   "outputDirectory": "fronted/build",
   "installCommand": "cd fronted && npm install",
-  "framework": "react",
+  "framework": "create-react-app",
   "rewrites": [
     {
       "source": "/(.*)",
