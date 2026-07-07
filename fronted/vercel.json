@@ -1,4 +1,5 @@
 {
+    "installCommand": "npm install && chmod +x node_modules/.bin/react-scripts",
     "rewrites": [
         {
             "source": "/(.*)",
