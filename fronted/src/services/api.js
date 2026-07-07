@@ -8,7 +8,12 @@ import axios from 'axios';
 // Uses the Vercel environment variable in production, defaults to localhost in development
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'https://videmsbackend-production.up.railway.app/api/',
-  headers: { 'Content-Type': 'application/json' },
+  headers: { 
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  },
 });
 
 // 2. Intercept requests to attach the Auth token
