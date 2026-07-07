@@ -1,15 +1,14 @@
 // src/services/api.js
 import axios from 'axios';
 
+//sample//
+
+
 // 1. Create the Axios instance pointing to Django dynamically
 // Uses the Vercel environment variable in production, defaults to localhost in development
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
-
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: 'http://localhost:8000/api/',
+  headers: { 'Content-Type': 'application/json' },
 });
 
 // 2. Intercept requests to attach the Auth token
@@ -60,7 +59,13 @@ export const adminAPI = {
 
 export const publicAPI = {
   // Added Banner Fetcher
-  getBanners: () => apiClient.get('banners/')
+  getBanners: () => apiClient.get('banners/'),
+};
+
+export const orderAPI = {
+  create: (data) => apiClient.post('orders/create/', data),
+  verify: (data) => apiClient.post('orders/verify/', data),
+  myOrders: () => apiClient.get('orders/my-orders/'),
 };
 
 export default apiClient;

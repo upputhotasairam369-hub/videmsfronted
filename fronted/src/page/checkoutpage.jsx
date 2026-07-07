@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useCart } from '../hooks/usecart';
 import { AlertTriangle, Loader2, ShieldCheck, Lock, Truck, Calendar, DollarSign, LocateFixed } from 'lucide-react';
+import { orderAPI } from '../services/api';
 
 // ========================================================
 // 🚀 1. DYNAMIC SCRIPT LOADERS
@@ -223,15 +224,15 @@ const CheckoutPage = () => {
 
           if (data && data.address) {
             const { address } = data;
-            
+
             const fetchedPincode = address.postcode || '';
             const fetchedCity = address.city || address.town || address.village || address.state_district || '';
             const fetchedState = address.state || '';
-            
+
             const streetNumber = address.house_number || '';
             const route = address.road || '';
             const fetchedAddress1 = [streetNumber, route].filter(Boolean).join(', ');
-            
+
             const sublocality = address.suburb || address.neighbourhood || address.residential || '';
             const fetchedAddress2 = sublocality;
 
@@ -373,15 +374,39 @@ const CheckoutPage = () => {
     }
   };
 
-  const handleCodPayment = () => {
+  const handleCodPayment = async () => {
     setLoadingPayment(true);
-    setTimeout(() => {
-      setLoadingPayment(false);
+    try {
+      // 1. Package the user's delivery details and cart items
+      const payload = {
+        customer_name: shipping.fullName,
+        customer_email: billing.email || currentUser?.email || "customer@example.com",
+        customer_phone: shipping.phone,
+        shipping_address: `${shipping.address1}, ${shipping.address2 ? shipping.address2 + ', ' : ''}${shipping.city}, ${shipping.state}`,
+        pincode: shipping.pincode,
+        total_amount: totalPayable,
+        payment_method: 'COD',
+        items: validItems.map(i => ({
+          product_id: i.productId || i._id || i.id,
+          variant_id: i.variantId || 'default',
+          name: i.name,
+          quantity: i.quantity,
+          price: i.price
+        }))
+      };
+
+      // 2. Send to Django Database (This auto-fills the Admin Portal & deducts stock)
+      await orderAPI.create(payload);
+
       clearCart();
       sessionStorage.removeItem('delivery_pincode');
       alert(`Order Placed Successfully via Cash On Delivery!\nEstimated Arrival: ${getEstimatedDeliveryDate()}`);
       navigate('/');
-    }, 1500);
+    } catch (error) {
+      alert(error.response?.data?.error || "Failed to place COD order. Please try again.");
+    } finally {
+      setLoadingPayment(false);
+    }
   };
 
   const handleRazorpayPayment = async () => {
@@ -394,34 +419,71 @@ const CheckoutPage = () => {
       return;
     }
 
-    const options = {
-      key: "rzp_test_YOUR_TEST_KEY_HERE",
-      amount: totalPayable * 100,
-      currency: "INR",
-      name: "Videm's Gallery",
-      description: "Premium Furniture Purchase",
-      theme: { color: "#e87831" },
-      prefill: {
-        name: shipping.fullName,
-        contact: shipping.phone,
-        email: billing.email || "customer@example.com"
-      },
-      handler: function (response) {
-        clearCart();
-        sessionStorage.removeItem('delivery_pincode');
-        alert("Payment Successful! Order Placed.");
-        navigate('/');
-      }
-    };
+    try {
+      const payload = {
+        customer_name: shipping.fullName,
+        customer_email: billing.email || currentUser?.email || "customer@example.com",
+        customer_phone: shipping.phone,
+        shipping_address: `${shipping.address1}, ${shipping.address2 ? shipping.address2 + ', ' : ''}${shipping.city}, ${shipping.state}`,
+        pincode: shipping.pincode,
+        total_amount: totalPayable,
+        payment_method: 'RAZORPAY',
+        items: validItems.map(i => ({
+          product_id: i.productId || i._id || i.id,
+          variant_id: i.variantId || 'default',
+          name: i.name,
+          quantity: i.quantity,
+          price: i.price
+        }))
+      };
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.on('payment.failed', function (response) {
-      alert("Payment Failed or Cancelled. Please try again.");
+      // 1. Tell Django to create a Pending Order and lock the stock
+      const orderRes = await orderAPI.create(payload);
+      const razorpayOrderId = orderRes.data.razorpay_order_id;
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_YOUR_TEST_KEY_HERE",
+        amount: totalPayable * 100,
+        currency: "INR",
+        name: "Videm's Gallery",
+        description: "Premium Furniture Purchase",
+        order_id: razorpayOrderId, // Link the Django order to Razorpay
+        theme: { color: "#e87831" },
+        prefill: {
+          name: shipping.fullName,
+          contact: shipping.phone,
+          email: billing.email || currentUser?.email || "customer@example.com"
+        },
+        handler: async function (response) {
+          try {
+            // 2. Tell Django the payment succeeded so it can mark it as "PAID"
+            await orderAPI.verify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            });
+            clearCart();
+            sessionStorage.removeItem('delivery_pincode');
+            alert("Payment Successful! Order Placed.");
+            navigate('/');
+          } catch (verifyError) {
+            alert("Payment Verification Failed! Please contact support.");
+          }
+        }
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.on('payment.failed', function (response) {
+        alert("Payment Failed or Cancelled. Please try again.");
+      });
+
+      paymentObject.open();
+
+    } catch (error) {
+      alert(error.response?.data?.error || "Failed to initiate Razorpay payment. Stock may be unavailable.");
+    } finally {
       setLoadingPayment(false);
-    });
-
-    paymentObject.open();
-    setLoadingPayment(false);
+    }
   };
 
   if (!currentUser) return null;
