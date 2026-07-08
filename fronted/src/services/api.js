@@ -1,28 +1,24 @@
 // src/services/api.js
 import axios from 'axios';
 
-// 1. Create the Axios instance pointing to Django dynamically
-// Uses the Vercel environment variable in production, defaults to localhost in development
+// 1. HARDCODE the known working URL to guarantee connection and bypass Vercel Env issues.
+// Note: It strictly ends in /api/ to ensure routes like /api/products/ resolve correctly.
+const API_BASE_URL = 'https://videmsbackend-production.up.railway.app/api/';
+
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://videmsbackend-production.up.railway.app/api/',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0'
+    'Accept': 'application/json'
   },
 });
 
-// 2. Intercept requests to attach the Auth token and ALWAYS bust cache with timestamp
-// This forces fresh data on EVERY request (critical for mobile devices)
+// 2. Intercept requests to attach the Auth token
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  // ⚠️ CRITICAL: Append timestamp to EVERY request without exception
-  // This prevents ANY caching at browser, CDN, or service worker level
-  config.params = { ...config.params, _t: Date.now() };
   return config;
 });
 
@@ -30,11 +26,10 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   response => response,
   error => {
-    console.error('API Error:', {
+    console.error('API Error Detected:', {
       status: error.response?.status,
-      message: error.response?.data?.detail || error.message,
+      message: error.response?.data || error.message,
       url: error.config?.url,
-      timestamp: new Date().toISOString()
     });
     return Promise.reject(error);
   }
@@ -47,8 +42,6 @@ export const productAPI = {
   categories: () => apiClient.get('categories/')
 };
 
-// --- CONNECTION TEST ---
-// Call this from any component to verify Django is reachable
 export const healthAPI = {
   check: () => apiClient.get('health/')
 };
@@ -60,7 +53,6 @@ export const authAPI = {
   updateProfile: (data) => apiClient.put('auth/me/update/', data)
 };
 
-// --- CART APIs ---
 export const cartAPI = {
   get: () => apiClient.get('cart/'),
   add: (data) => apiClient.post('cart/add/', data),
@@ -72,7 +64,6 @@ export const cartAPI = {
 };
 
 export const adminAPI = {
-  // Routes to the Django Admin endpoints
   dashboard: () => apiClient.get('admin-api/dashboard/'),
   products: (params) => apiClient.get('products/', { params }),
   orders: (params) => apiClient.get('admin-api/orders/', { params }),
@@ -80,7 +71,6 @@ export const adminAPI = {
 };
 
 export const publicAPI = {
-  // Added Banner Fetcher
   getBanners: () => apiClient.get('banners/'),
 };
 
