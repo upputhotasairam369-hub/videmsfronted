@@ -20,7 +20,7 @@ export const fetchProductDetail = createAsyncThunk(
   'products/fetchProductDetail',
   async (slug, { rejectWithValue }) => {
     try {
-      console.log('�� Fetching product detail for slug:', slug);
+      console.log('🔄 Fetching product detail for slug:', slug);
       const response = await productAPI.detail(slug);
       console.log('✅ Product detail fetched successfully:', response.data);
       return response.data;
@@ -91,7 +91,7 @@ const productSlice = createSlice({
         state.loading = false;
         state.hasFetched = true;
         state.lastFetchTime = Date.now();
-        
+
         // Handle both paginated and direct array responses
         if (Array.isArray(action.payload)) {
           state.items = action.payload;
