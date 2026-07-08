@@ -4,18 +4,21 @@ import HeroCarousel from '../components/home/herocarousel';
 import PromoBanner from '../components/home/promobanner';
 import CategoryGrid from '../components/home/catergorygrid';
 import ProductGrid from '../components/home/productgrid';
+import LoadingSpinner from '../components/common/lodingspinner';
 import { fetchProducts, invalidateProducts } from '../store/slices/productslice';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { items, featured } = useSelector((state) => state.products);
+  const { items, loading, error } = useSelector((state) => state.products);
 
   useEffect(() => {
+    // 🔥 CRITICAL: Always invalidate products on mount to force fresh fetch
     dispatch(invalidateProducts());
+    // Fetch fresh products every time homepage loads
     dispatch(fetchProducts({ limit: 10, featured: true }));
   }, [dispatch]);
 
-  // Running slides // 
+  // Running slides
   const slides = [
     {
       id: 1,
@@ -40,7 +43,7 @@ const HomePage = () => {
     },
   ];
 
-  // Shop by the category //
+  // Shop by category
   const categories = [
     {
       id: 1,
@@ -77,43 +80,83 @@ const HomePage = () => {
   return (
     <div className="space-y-10 md:space-y-16 pb-16">
       <HeroCarousel slides={slides} />
-
-      {/* 🚀 Duplicate buttons removed from here! It just calls your CategoryGrid directly now. */}
       <CategoryGrid categories={categories} />
 
-      <ProductGrid
-        title="Bestsellers"
-        subtitle="Customer favorites this month"
-        products={items?.slice(0, 8) || []}
-      />
-
-      <div className="container mx-auto px-4">
-        <div className="bg-primary-50 rounded-2xl p-6 md:p-10 text-center flex flex-col items-center justify-center border border-primary-100">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900">
-            Furnish Your Dream Home with EMI
-          </h2>
-          <p className="text-gray-600 mb-6 max-w-2xl">
-            Experience the joy of premium furniture without the upfront cost. Pay in easy installments starting at ₹999/month with our No Cost EMI options.
-          </p>
-
-          <button
-            className="bg-[#f97316] text-white px-8 py-3 rounded-md font-bold hover:bg-[#ea580c] transition-all duration-200 !outline-none focus:!outline-none focus-visible:!outline-none !ring-0 !ring-offset-0 focus:!ring-0 focus:!ring-offset-0 focus-visible:!ring-0 focus-visible:!ring-offset-0 select-none border-0 bg-clip-padding !shadow-none"
-            style={{
-              WebkitTapHighlightColor: 'transparent',
-              outline: 'none',
-              boxShadow: 'none'
-            }}
-          >
-            Explore EMI Options
-          </button>
+      {/* 🔥 Show loading state */}
+      {loading && (
+        <div className="py-12 flex justify-center">
+          <LoadingSpinner />
         </div>
-      </div>
+      )}
 
-      <ProductGrid
-        title="Trending Furniture"
-        subtitle="Fresh designs for your home"
-        products={items?.slice(2, 6) || []}
-      />
+      {/* 🔥 Show error message if API fails */}
+      {error && !loading && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mx-4 md:mx-0">
+          <div className="container mx-auto">
+            <h3 className="text-red-800 font-bold mb-2">
+              ⚠️ Unable to Load Products
+            </h3>
+            <p className="text-red-700 text-sm">
+              {error} - Please refresh the page or try again later.
+            </p>
+            <button
+              onClick={() => {
+                dispatch(invalidateProducts());
+                dispatch(fetchProducts({ limit: 10, featured: true }));
+              }}
+              className="mt-3 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm font-semibold"
+            >
+              🔄 Retry
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 🔥 Show products only if loaded AND no error */}
+      {!loading && !error && items && items.length > 0 && (
+        <>
+          <ProductGrid
+            title="Bestsellers"
+            subtitle="Customer favorites this month"
+            products={items?.slice(0, 8) || []}
+          />
+
+          <div className="container mx-auto px-4">
+            <div className="bg-primary-50 rounded-2xl p-6 md:p-10 text-center flex flex-col items-center justify-center border border-primary-100">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900">
+                Furnish Your Dream Home with EMI
+              </h2>
+              <p className="text-gray-600 mb-6 max-w-2xl">
+                Experience the joy of premium furniture without the upfront cost. Pay in easy installments starting at ₹999/month with our No Cost EMI options.
+              </p>
+
+              <button
+                className="bg-[#f97316] text-white px-8 py-3 rounded-md font-bold hover:bg-[#ea580c] transition-all duration-200 !outline-none focus:!outline-none focus-visible:!outline-none !ring-0"
+                style={{
+                  WebkitTapHighlightColor: 'transparent',
+                  outline: 'none',
+                  boxShadow: 'none'
+                }}
+              >
+                Explore EMI Options
+              </button>
+            </div>
+          </div>
+
+          <ProductGrid
+            title="Trending Furniture"
+            subtitle="Fresh designs for your home"
+            products={items?.slice(2, 6) || []}
+          />
+        </>
+      )}
+
+      {/* 🔥 Show message if no products found */}
+      {!loading && !error && (!items || items.length === 0) && (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">No products available at the moment.</p>
+        </div>
+      )}
     </div>
   );
 };

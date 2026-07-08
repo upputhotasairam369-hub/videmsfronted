@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../product/productcart';
 
 const ProductGrid = ({ title, products, subtitle }) => {
-  if (!products || products.length === 0) return null;
+  // 🔥 CHANGED: Don't return null for empty products
+  // Let parent components handle loading/error states
+  // This grid will only be called when products exist
 
   return (
     <section className="py-8 md:py-12 bg-white">
@@ -25,11 +27,17 @@ const ProductGrid = ({ title, products, subtitle }) => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
+        {products && products.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No products available in this section.</p>
+          </div>
+        )}
 
         <Link
           to="/products"

@@ -1,9 +1,6 @@
 // src/services/api.js
 import axios from 'axios';
 
-//sample//
-
-
 // 1. Create the Axios instance pointing to Django dynamically
 // Uses the Vercel environment variable in production, defaults to localhost in development
 const apiClient = axios.create({
@@ -16,17 +13,32 @@ const apiClient = axios.create({
   },
 });
 
-// 2. Intercept requests to attach the Auth token and bust mobile caches
+// 2. Intercept requests to attach the Auth token and ALWAYS bust cache with timestamp
+// This forces fresh data on EVERY request (critical for mobile devices)
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  // Cache-busting: append a unique timestamp to every request
-  // Prevents mobile browsers/CDNs from serving stale cached responses
+  // ⚠️ CRITICAL: Append timestamp to EVERY request without exception
+  // This prevents ANY caching at browser, CDN, or service worker level
   config.params = { ...config.params, _t: Date.now() };
   return config;
 });
+
+// 3. Add response error logging for debugging
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', {
+      status: error.response?.status,
+      message: error.response?.data?.detail || error.message,
+      url: error.config?.url,
+      timestamp: new Date().toISOString()
+    });
+    return Promise.reject(error);
+  }
+);
 
 // --- EXISTING APIs ---
 export const productAPI = {
@@ -48,13 +60,15 @@ export const authAPI = {
   updateProfile: (data) => apiClient.put('auth/me/update/', data)
 };
 
-// --- RESTORED APIs (The Fix) ---
+// --- CART APIs ---
 export const cartAPI = {
   get: () => apiClient.get('cart/'),
   add: (data) => apiClient.post('cart/add/', data),
   update: (id, data) => apiClient.put(`cart/update/${id}/`, data),
   remove: (id) => apiClient.delete(`cart/remove/${id}/`),
-  clear: () => apiClient.delete('cart/clear/')
+  clear: () => apiClient.delete('cart/clear/'),
+  reserve: (data) => apiClient.post('cart/reserve/', data),
+  sync: (items) => apiClient.post('cart/sync/', { items })
 };
 
 export const adminAPI = {
