@@ -13,9 +13,8 @@ import CartPage from './page/cartpage';
 import CheckoutPage from './page/checkoutpage';
 import LoginPage from './page/loginpage';
 import WishlistPage from './page/wishlist';
-import AdminDashboard from './page/admindashboard';
 import ErrorBoundary from './components/common/errorboundary';
-import AccountPage from './page/accountpage'; // 🚀 Import the new page!
+import AccountPage from './page/accountpage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,9 +39,7 @@ const App = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/login" element={<LoginPage />} />
-            {/* 🚀 Add the Account Route to prevent the blank screen crash */}
             <Route path="/account" element={<AccountPage />} />
-            <Route path="/admin/*" element={<AdminDashboard />} />
           </Routes>
         </main>
         <Footer />

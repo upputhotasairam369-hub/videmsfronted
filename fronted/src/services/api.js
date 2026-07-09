@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from 'axios';
 
-// 1. HARDCODE the known working URL to guarantee connection and bypass Vercel Env issues.
+// 1. Point to your LOCAL Django backend so you can see the data you add in your local Admin Portal
 // Note: It strictly ends in /api/ to ensure routes like /api/products/ resolve correctly.
 const API_BASE_URL = 'https://videmsbackend-production.up.railway.app/api/';
 
@@ -78,6 +78,28 @@ export const orderAPI = {
   create: (data) => apiClient.post('orders/create/', data),
   verify: (data) => apiClient.post('orders/verify/', data),
   myOrders: () => apiClient.get('orders/my-orders/'),
+};
+
+export const getCategories = async () => {
+  try {
+    const response = await apiClient.get('categories/');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
+  }
+};
+
+export const combinationAPI = {
+  list: () => apiClient.get('combinations/'),
+};
+
+export const bestSellerAPI = {
+  list: () => apiClient.get('home/bestsellers/'),
+};
+
+export const newArrivalAPI = {
+  list: () => apiClient.get('home/new-arrivals/'),
 };
 
 export default apiClient;
