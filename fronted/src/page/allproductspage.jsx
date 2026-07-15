@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { fetchProducts, invalidateProducts } from '../store/slices/productslice';
+import { fetchProducts } from '../store/slices/productslice';
 import ProductCard from '../components/product/productcart';
 import LoadingSpinner from '../components/common/lodingspinner';
-import { MOCK_PRODUCTS } from '../utils/mockproducts';
 import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 
 const SIDEBAR_CATEGORIES = {
@@ -71,18 +70,11 @@ const AllProductsPage = () => {
     const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-    const { items: apiItems, loading, error, hasFetched } = useSelector((state) => state.products);
+    const { items: apiItems, loading, error } = useSelector((state) => state.products);
 
     const items = useMemo(() => {
-        // Only fall back to MOCK_PRODUCTS if the API has been called and returned nothing
-        return (apiItems && apiItems.length > 0) ? apiItems : (hasFetched ? [] : MOCK_PRODUCTS);
-    }, [apiItems, hasFetched]);
-
-    const useMockData = useMemo(() => {
-        // True only when the API has been called AND returned empty
-        // While loading or before first fetch, we show mock data as a placeholder
-        return hasFetched && (!apiItems || apiItems.length === 0);
-    }, [apiItems, hasFetched]);
+        return apiItems || [];
+    }, [apiItems]);
 
     // ── Sync state when URL params change ──
     useEffect(() => {
@@ -138,11 +130,6 @@ const AllProductsPage = () => {
     const paginatedProducts = sortedProducts.slice(startIdx, startIdx + 20);
     const calculatedTotalPages = Math.ceil(sortedProducts.length / 20);
 
-    // ── Invalidate cache on mount so a page refresh always fetches fresh data ──
-    useEffect(() => {
-        dispatch(invalidateProducts());
-    }, [dispatch]);
-
     useEffect(() => {
         const params = { page, limit: 20 };
         if (selectedCategory !== 'all') params.category = selectedCategory;
@@ -191,7 +178,7 @@ const AllProductsPage = () => {
     };
 
     // ── Error state ──
-    if (error && !useMockData) {
+    if (error) {
         return (
             <div className="bg-gray-50 min-h-screen py-12">
                 <div className="container mx-auto px-4 text-center">
@@ -341,7 +328,6 @@ const AllProductsPage = () => {
                             <p className="text-gray-400 text-sm md:text-base font-medium select-none">
                                 Showing {paginatedProducts.length > 0 ? startIdx + 1 : 0}–
                                 {startIdx + paginatedProducts.length} of {sortedProducts.length} products
-                                {useMockData && <span className="text-orange-400 ml-2 font-medium">(Demo Data)</span>}
                             </p>
                         </div>
 
@@ -418,7 +404,7 @@ const AllProductsPage = () => {
 
                     {/* ── Products grid ── */}
                     <div className="col-span-12 md:col-span-9">
-                        {loading && items.length === 0 ? (
+                        {loading && paginatedProducts.length === 0 ? (
                             <div className="flex justify-center items-center py-32">
                                 <LoadingSpinner />
                             </div>
