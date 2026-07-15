@@ -56,10 +56,10 @@ const HomePage = () => {
     <div className="space-y-10 md:space-y-16 pb-16">
       <HeroCarousel slides={slides} />
       <CategorySection />
-      
+
       {/* Shop by Combination */}
       <CombinationSection />
-      
+
       {/* Our Bestsellers */}
       <BestSellerSection />
 
@@ -88,30 +88,7 @@ const HomePage = () => {
       {/* New Arrivals */}
       <NewArrivalSection />
 
-      {/* 🎯 SHOP THE COLLECTION SECTION WITH PREFETCH */}
-      <div className="container mx-auto px-4">
-        <div className="bg-gradient-to-r from-[#f97316] to-[#ea580c] rounded-2xl p-8 md:p-12 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-            Ready to Shop?
-          </h2>
-          <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-            Browse our complete collection of premium furniture handpicked for your home.
-          </p>
-          <button
-            onMouseEnter={handleShopCollectionHover}
-            onTouchStart={handleShopCollectionHover}
-            onClick={handleShopCollectionClick}
-            className="bg-white text-[#f97316] px-8 py-3.5 rounded-lg font-bold hover:bg-gray-100 transition-all duration-300 !outline-none !border-none !ring-0 !shadow-none"
-            style={{
-              WebkitTapHighlightColor: 'transparent',
-              outline: 'none',
-              boxShadow: 'none'
-            }}
-          >
-            Shop the Collection →
-          </button>
-        </div>
-      </div>
+
     </div>
   );
 };
