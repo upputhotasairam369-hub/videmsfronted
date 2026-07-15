@@ -47,8 +47,7 @@ export const healthAPI = {
 };
 
 export const authAPI = {
-  sendOtp: (data) => apiClient.post('auth/send-otp/', data),
-  verifyOtp: (data) => apiClient.post('auth/verify-otp/', data),
+  googleAuth: (data) => apiClient.post('auth/google/', data),
   me: () => apiClient.get('auth/me/'),
   updateProfile: (data) => apiClient.put('auth/me/update/', data)
 };

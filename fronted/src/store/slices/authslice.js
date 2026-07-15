@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authAPI } from '../../services/api';
 
-export const loginWithOtp = createAsyncThunk(
-  'auth/loginWithOtp',
-  async ({ phone, otp }, { rejectWithValue }) => {
+export const loginWithGoogle = createAsyncThunk(
+  'auth/loginWithGoogle',
+  async ({ credential }, { rejectWithValue }) => {
     try {
-      const response = await authAPI.verifyOtp({ phone, otp });
+      const response = await authAPI.googleAuth({ credential });
       localStorage.setItem('token', response.data.token);
       return response.data.user;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || 'Verification failed'
+        error.response?.data?.message || 'Google Login failed'
       );
     }
   }
@@ -58,9 +58,6 @@ const authSlice = createSlice({
       localStorage.removeItem('token');
       state.otpSent = false;
     },
-    setOtpSent: (state, action) => {
-      state.otpSent = action.payload;
-    },
     clearError: (state) => {
       state.error = null;
     },
@@ -68,16 +65,16 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // 1. Initial Login Flow
-      .addCase(loginWithOtp.pending, (state) => {
+      .addCase(loginWithGoogle.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginWithOtp.fulfilled, (state, action) => {
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
       })
-      .addCase(loginWithOtp.rejected, (state, action) => {
+      .addCase(loginWithGoogle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -112,5 +109,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setOtpSent, clearError } = authSlice.actions;
+export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;

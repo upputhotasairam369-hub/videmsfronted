@@ -543,15 +543,20 @@ const CheckoutPage = () => {
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-1.5 text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                      Primary Phone Number * <Lock size={12} className="text-gray-400" />
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Primary Phone Number *
                     </label>
                     <input
                       type="text"
-                      readOnly
                       value={shipping.phone}
-                      className="w-full px-4 py-3 rounded-xl text-sm border border-gray-200 bg-gray-100 text-gray-600 outline-none cursor-not-allowed select-none"
-                      placeholder="Auto-filled from Account"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '');
+                        setShipping(prev => ({ ...prev, phone: val }));
+                        if (errors.shipping_phone) setErrors(prev => ({ ...prev, shipping_phone: null }));
+                      }}
+                      maxLength={10}
+                      className={`w-full px-4 py-3 rounded-xl text-sm border ${errors.shipping_phone ? 'border-red-500 focus:ring-red-200 bg-red-50' : 'border-gray-200 focus:border-[#e87831]'} outline-none transition-all`}
+                      placeholder="10-digit mobile number"
                     />
                     {errors.shipping_phone && <p className="text-red-500 text-xs mt-1">{errors.shipping_phone}</p>}
                   </div>
