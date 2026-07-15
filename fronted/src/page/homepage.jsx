@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import HeroCarousel from '../components/home/herocarousel';
 import CategorySection from '../components/home/Category/CategorySection';
 import CombinationSection from '../components/home/ShopByCombination/CombinationSection';
@@ -9,13 +10,15 @@ import { fetchProducts } from '../store/slices/productslice';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  // ✅ FIX #1: REMOVE invalidateProducts() - let Redux keep the cache!
   useEffect(() => {
-    // Fetch fresh products every time homepage loads (relies on the smart cache logic in productslice)
+    // 🎯 Just dispatch - Redux will handle caching automatically
+    // It will SKIP this call if same params were fetched < 5 min ago
     dispatch(fetchProducts({ limit: 10, featured: true }));
   }, [dispatch]);
 
-  // Running slides
   const slides = [
     {
       id: 1,
@@ -40,16 +43,26 @@ const HomePage = () => {
     },
   ];
 
+  // ✅ FIX #3: PREFETCH on hover - start loading before user navigates
+  const handleShopCollectionHover = () => {
+    console.log('🎯 User hovering - prefetching all products');
+    // This will fetch ALL products, but Redux cache logic prevents duplicate calls
+    dispatch(fetchProducts({ limit: 20 }));
+  };
+
+  const handleShopCollectionClick = () => {
+    navigate('/products');
+  };
 
   return (
     <div className="space-y-10 md:space-y-16 pb-16">
       <HeroCarousel slides={slides} />
       <CategorySection />
       
-      {/* 1. Shop by Combination */}
+      {/* Shop by Combination */}
       <CombinationSection />
       
-      {/* 2. Our Bestsellers */}
+      {/* Our Bestsellers */}
       <BestSellerSection />
 
       <div className="container mx-auto px-4">
@@ -74,8 +87,33 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* 3. New Arrivals */}
+      {/* New Arrivals */}
       <NewArrivalSection />
+
+      {/* 🎯 SHOP THE COLLECTION SECTION WITH PREFETCH */}
+      <div className="container mx-auto px-4">
+        <div className="bg-gradient-to-r from-[#f97316] to-[#ea580c] rounded-2xl p-8 md:p-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+            Ready to Shop?
+          </h2>
+          <p className="text-white/90 mb-8 max-w-2xl mx-auto">
+            Browse our complete collection of premium furniture handpicked for your home.
+          </p>
+          <button
+            onMouseEnter={handleShopCollectionHover}
+            onTouchStart={handleShopCollectionHover}
+            onClick={handleShopCollectionClick}
+            className="bg-white text-[#f97316] px-8 py-3.5 rounded-lg font-bold hover:bg-gray-100 transition-all duration-300 !outline-none !border-none !ring-0 !shadow-none"
+            style={{
+              WebkitTapHighlightColor: 'transparent',
+              outline: 'none',
+              boxShadow: 'none'
+            }}
+          >
+            Shop the Collection →
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

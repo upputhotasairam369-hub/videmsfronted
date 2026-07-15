@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { productAPI } from '../../services/api';
 
+// 🎯 Smart fetch with built-in cache validation
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params, { rejectWithValue }) => {
@@ -15,17 +16,26 @@ export const fetchProducts = createAsyncThunk(
     }
   },
   {
+    // 🔥 CRITICAL: This condition prevents redundant API calls
     condition: (params, { getState }) => {
       const { products } = getState();
-      const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+      const CACHE_TIME = 5 * 60 * 1000; // 5 minutes cache window
+
+      // Check if params are identical to last fetch
       const isSameParams = JSON.stringify(params) === JSON.stringify(products.lastParams);
-      const isCacheValid = products.lastFetchTime && (Date.now() - products.lastFetchTime < CACHE_TIME);
       
+      // Check if cache is still fresh (< 5 minutes old)
+      const isCacheValid = products.lastFetchTime && 
+        (Date.now() - products.lastFetchTime < CACHE_TIME);
+      
+      // If all conditions met, SKIP the API call entirely
       if (isSameParams && isCacheValid && products.items.length > 0) {
-        console.log('⚡ Skipping fetch: Using cached products (params unchanged and cache < 5m old)');
-        return false; // Cancels the fetch
+        console.log('⚡ CACHE HIT: Skipping API call - using cached products');
+        return false; // Aborts the thunk
       }
-      return true;
+
+      console.log('📡 CACHE MISS: Fetching fresh data from API');
+      return true; // Proceeds with API call
     }
   }
 );
@@ -54,9 +64,9 @@ const productSlice = createSlice({
     loading: false,
     error: null,
     totalPages: 0,
-    hasFetched: false, // ⚠️ This is ALWAYS reset, allowing fresh fetches
-    lastFetchTime: null,
-    lastParams: null,
+    hasFetched: false,
+    lastFetchTime: null,      // ⏱️ Timestamp of last successful fetch
+    lastParams: null,          // 📋 Parameters of last fetch (for comparison)
   },
   reducers: {
     resetProducts: (state) => {
@@ -70,13 +80,13 @@ const productSlice = createSlice({
       state.lastFetchTime = null;
       state.lastParams = null;
     },
-    invalidateProducts: (state) => {
-      // 🔥 CRITICAL: Reset the cache flag to force a fresh fetch
-      state.hasFetched = false;
-      state.items = []; // Clear stale items too
-      state.error = null;
-      state.lastParams = null;
-    },
+    // 🚫 DO NOT USE THIS ANYMORE - it destroys the cache!
+    // invalidateProducts: (state) => {
+    //   state.hasFetched = false;
+    //   state.items = [];
+    //   state.error = null;
+    //   state.lastParams = null;
+    // },
     updateProductStock: (state, action) => {
       const { productId, variantId, availableStock } = action.payload;
       if (state.currentProduct && state.currentProduct._id === productId) {
@@ -100,17 +110,19 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // When fetch starts: Set loading=true, clear errors
       .addCase(fetchProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
+      // When fetch succeeds: Store data + metadata (lastFetchTime, lastParams)
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.hasFetched = true;
-        state.lastFetchTime = Date.now();
-        state.lastParams = action.meta.arg;
+        state.lastFetchTime = Date.now();        // 🕐 Store current time
+        state.lastParams = action.meta.arg;      // 📋 Store params used
 
-        // Handle both paginated and direct array responses
+        // Handle various response formats from API
         if (Array.isArray(action.payload)) {
           state.items = action.payload;
           state.totalPages = 1;
@@ -118,20 +130,23 @@ const productSlice = createSlice({
           state.items = action.payload.results;
           state.totalPages = action.payload.total_pages || 1;
         } else if (action.payload.data) {
-          state.items = Array.isArray(action.payload.data) ? action.payload.data : [action.payload.data];
+          state.items = Array.isArray(action.payload.data) 
+            ? action.payload.data 
+            : [action.payload.data];
           state.totalPages = 1;
         } else {
           state.items = [];
           state.totalPages = 1;
         }
       })
+      // When fetch fails: Show error, allow retry
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || 'Failed to fetch products';
-        // ⚠️ Don't set hasFetched to true on error, allowing retry
-        state.hasFetched = false;
-        state.items = []; // Clear any stale data
+        state.hasFetched = false;      // Allows retry
+        state.items = [];              // Clear stale data
       })
+      // Product detail cases
       .addCase(fetchProductDetail.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -147,5 +162,5 @@ const productSlice = createSlice({
   },
 });
 
-export const { resetProducts, invalidateProducts, updateProductStock } = productSlice.actions;
+export const { resetProducts, updateProductStock } = productSlice.actions;
 export default productSlice.reducer;
