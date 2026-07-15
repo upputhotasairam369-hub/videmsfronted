@@ -80,13 +80,6 @@ const productSlice = createSlice({
       state.lastFetchTime = null;
       state.lastParams = null;
     },
-    // 🚫 DO NOT USE THIS ANYMORE - it destroys the cache!
-    // invalidateProducts: (state) => {
-    //   state.hasFetched = false;
-    //   state.items = [];
-    //   state.error = null;
-    //   state.lastParams = null;
-    // },
     updateProductStock: (state, action) => {
       const { productId, variantId, availableStock } = action.payload;
       if (state.currentProduct && state.currentProduct._id === productId) {

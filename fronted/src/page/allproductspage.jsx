@@ -151,7 +151,6 @@ const AllProductsPage = () => {
         if (selectedCategory !== 'all') params.category = selectedCategory;
         if (selectedSubcategory) params.subcategory = selectedSubcategory;
         if (sortBy !== 'newest') params.sort = sortBy;
-        // Always fetch from API — no more mock data guard
         dispatch(fetchProducts(params));
     }, [dispatch, selectedCategory, selectedSubcategory, sortBy, page]);
 

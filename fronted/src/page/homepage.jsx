@@ -12,10 +12,8 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // ✅ FIX #1: REMOVE invalidateProducts() - let Redux keep the cache!
   useEffect(() => {
-    // 🎯 Just dispatch - Redux will handle caching automatically
-    // It will SKIP this call if same params were fetched < 5 min ago
+    // Smart cache in productslice handles deduplication automatically
     dispatch(fetchProducts({ limit: 10, featured: true }));
   }, [dispatch]);
 
