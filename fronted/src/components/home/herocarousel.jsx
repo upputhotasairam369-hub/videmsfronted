@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { publicAPI } from '../../services/api';
+import { fetchProducts } from '../../store/slices/productslice';
 
 const HeroCarousel = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [slides, setSlides] = useState([]);
   const [current, setCurrent] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
@@ -118,6 +121,11 @@ const HeroCarousel = () => {
               </p>
             )}
             <button
+              onMouseEnter={() => {
+                if (slide.link_url === '/products' || !slide.link_url) {
+                  dispatch(fetchProducts({ page: 1, limit: 20 }));
+                }
+              }}
               onClick={() => navigate(slide.link_url || '/products')}
               className="bg-[#f97316] text-white px-8 py-3.5 rounded-md font-bold text-sm md:text-base hover:bg-orange-600 transition active:scale-95 shadow-md outline-none border-none"
             >

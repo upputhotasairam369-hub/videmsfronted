@@ -13,6 +13,20 @@ export const fetchProducts = createAsyncThunk(
       console.error('❌ Failed to fetch products:', error.message);
       return rejectWithValue(error.response?.data || { message: error.message });
     }
+  },
+  {
+    condition: (params, { getState }) => {
+      const { products } = getState();
+      const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+      const isSameParams = JSON.stringify(params) === JSON.stringify(products.lastParams);
+      const isCacheValid = products.lastFetchTime && (Date.now() - products.lastFetchTime < CACHE_TIME);
+      
+      if (isSameParams && isCacheValid && products.items.length > 0) {
+        console.log('⚡ Skipping fetch: Using cached products (params unchanged and cache < 5m old)');
+        return false; // Cancels the fetch
+      }
+      return true;
+    }
   }
 );
 
@@ -42,6 +56,7 @@ const productSlice = createSlice({
     totalPages: 0,
     hasFetched: false, // ⚠️ This is ALWAYS reset, allowing fresh fetches
     lastFetchTime: null,
+    lastParams: null,
   },
   reducers: {
     resetProducts: (state) => {
@@ -53,12 +68,14 @@ const productSlice = createSlice({
       state.totalPages = 0;
       state.hasFetched = false;
       state.lastFetchTime = null;
+      state.lastParams = null;
     },
     invalidateProducts: (state) => {
       // 🔥 CRITICAL: Reset the cache flag to force a fresh fetch
       state.hasFetched = false;
       state.items = []; // Clear stale items too
       state.error = null;
+      state.lastParams = null;
     },
     updateProductStock: (state, action) => {
       const { productId, variantId, availableStock } = action.payload;
@@ -91,6 +108,7 @@ const productSlice = createSlice({
         state.loading = false;
         state.hasFetched = true;
         state.lastFetchTime = Date.now();
+        state.lastParams = action.meta.arg;
 
         // Handle both paginated and direct array responses
         if (Array.isArray(action.payload)) {

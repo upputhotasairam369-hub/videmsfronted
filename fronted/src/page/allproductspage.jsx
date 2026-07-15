@@ -55,6 +55,22 @@ const flatInlineStyles = {
 };
 // ──────────────────────────────────────────────────────────────────────────────
 
+const ProductSkeletonGrid = () => (
+    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8 w-full">
+        {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-2xl shadow-[0_1px_6px_rgba(0,0,0,0.06)] border border-gray-100 p-4 h-[350px] flex flex-col">
+                <div className="bg-gray-200 h-48 rounded-xl mb-4 w-full animate-pulse"></div>
+                <div className="bg-gray-200 h-4 rounded w-3/4 mb-2 animate-pulse"></div>
+                <div className="bg-gray-200 h-4 rounded w-1/2 mb-4 animate-pulse"></div>
+                <div className="mt-auto flex justify-between items-center">
+                    <div className="bg-gray-200 h-6 rounded w-1/3 animate-pulse"></div>
+                    <div className="bg-gray-200 h-8 rounded-full w-8 animate-pulse"></div>
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
 const AllProductsPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -403,11 +419,9 @@ const AllProductsPage = () => {
                     </div>
 
                     {/* ── Products grid ── */}
-                    <div className="col-span-12 md:col-span-9">
+                    <div className="col-span-12 md:col-span-9 w-full">
                         {loading && paginatedProducts.length === 0 ? (
-                            <div className="flex justify-center items-center py-32">
-                                <LoadingSpinner />
-                            </div>
+                            <ProductSkeletonGrid />
                         ) : paginatedProducts.length === 0 ? (
                             <div className="bg-white rounded-2xl shadow-[0_1px_6px_rgba(0,0,0,0.06)] border border-gray-100
                                             p-12 md:p-16 text-center h-full flex flex-col items-center justify-center">
