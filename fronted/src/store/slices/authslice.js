@@ -9,9 +9,13 @@ export const loginWithGoogle = createAsyncThunk(
       localStorage.setItem('token', response.data.token);
       return response.data.user;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || 'Google Login failed'
-      );
+      // Gracefully extract the JSON error message from Django
+      const errorMessage = error.response?.data?.message 
+        || error.response?.data?.error
+        || error.response?.statusText 
+        || 'Our servers are currently unreachable. Please try again later.';
+        
+      return rejectWithValue(errorMessage);
     }
   }
 );
