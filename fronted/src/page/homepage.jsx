@@ -5,15 +5,13 @@ import CategorySection from '../components/home/Category/CategorySection';
 import CombinationSection from '../components/home/ShopByCombination/CombinationSection';
 import BestSellerSection from '../components/home/BestSellers/BestSellerSection';
 import NewArrivalSection from '../components/home/NewArrivals/NewArrivalSection';
-import { fetchProducts, invalidateProducts } from '../store/slices/productslice';
+import { fetchProducts } from '../store/slices/productslice';
 
 const HomePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // 🔥 CRITICAL: Always invalidate products on mount to force fresh fetch
-    dispatch(invalidateProducts());
-    // Fetch fresh products every time homepage loads
+    // Fetch fresh products every time homepage loads (relies on the smart cache logic in productslice)
     dispatch(fetchProducts({ limit: 10, featured: true }));
   }, [dispatch]);
 
