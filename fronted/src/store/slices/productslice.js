@@ -104,9 +104,16 @@ const productSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // When fetch starts: Set loading=true, clear errors
-      .addCase(fetchProducts.pending, (state) => {
+      // If params changed (e.g. homepage→products page), clear stale items
+      // so the skeleton loader shows instead of mismatched cached data
+      .addCase(fetchProducts.pending, (state, action) => {
         state.loading = true;
         state.error = null;
+        const newParams = action.meta.arg;
+        const isSameParams = JSON.stringify(newParams) === JSON.stringify(state.lastParams);
+        if (!isSameParams) {
+          state.items = [];
+        }
       })
       // When fetch succeeds: Store data + metadata (lastFetchTime, lastParams)
       .addCase(fetchProducts.fulfilled, (state, action) => {
