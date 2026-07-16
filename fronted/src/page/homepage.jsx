@@ -6,6 +6,7 @@ import CategorySection from '../components/home/Category/CategorySection';
 import CombinationSection from '../components/home/ShopByCombination/CombinationSection';
 import BestSellerSection from '../components/home/BestSellers/BestSellerSection';
 import NewArrivalSection from '../components/home/NewArrivals/NewArrivalSection';
+import BusinessBanner from '../components/home/BusinessBanner';
 import { fetchProducts } from '../store/slices/productslice';
 
 const HomePage = () => {
@@ -53,7 +54,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="space-y-10 md:space-y-16 pb-16">
+    <div className="flex flex-col w-full pb-6 md:pb-8 bg-white">
       <HeroCarousel slides={slides} />
       <CategorySection />
 
@@ -63,17 +64,17 @@ const HomePage = () => {
       {/* Our Bestsellers */}
       <BestSellerSection />
 
-      <div className="container mx-auto px-4">
-        <div className="bg-primary-50 rounded-2xl p-6 md:p-10 text-center flex flex-col items-center justify-center border border-primary-100">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900">
+      <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 lg:py-16">
+        <div className="bg-primary-50 rounded-2xl p-8 md:p-12 lg:p-16 text-center flex flex-col items-center justify-center border border-primary-100 w-full">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-gray-900 tracking-tight">
             Furnish Your Dream Home with EMI
           </h2>
-          <p className="text-gray-600 mb-6 max-w-2xl">
+          <p className="text-base md:text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
             Experience the joy of premium furniture without the upfront cost. Pay in easy installments starting at ₹999/month with our No Cost EMI options.
           </p>
 
           <button
-            className="bg-[#f97316] text-white px-8 py-3 rounded-md font-bold hover:bg-[#ea580c] transition-all duration-200 !outline-none focus:!outline-none focus-visible:!outline-none !ring-0"
+            className="bg-[#f97316] text-white px-8 md:px-10 py-3 md:py-4 rounded-md font-bold text-base md:text-lg hover:bg-[#ea580c] transition-all duration-200 !outline-none focus:!outline-none focus-visible:!outline-none !ring-0 shadow-sm"
             style={{
               WebkitTapHighlightColor: 'transparent',
               outline: 'none',
@@ -85,9 +86,11 @@ const HomePage = () => {
         </div>
       </div>
 
+      {/* Business Banner Section */}
+      <BusinessBanner />
+
       {/* New Arrivals */}
       <NewArrivalSection />
-
 
     </div>
   );

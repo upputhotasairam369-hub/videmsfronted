@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, ShoppingCart, User, Heart } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { Home, ShoppingCart, Heart } from 'lucide-react';
 import { useCart } from '../../hooks/usecart';
 import { useWishlist } from '../../hooks/useWishlist'; // 🚀 1. Imported the hook
 
@@ -9,19 +8,12 @@ const MobileBottomNav = () => {
   const location = useLocation();
   const { getItemCount } = useCart();
   const { items: wishlistItems = [] } = useWishlist(); // 🚀 2. Grab wishlist items
-  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
-    { icon: Search, label: 'Search', path: '/search' },
     // 🚀 3. Added the badge count logic here!
     { icon: Heart, label: 'Wishlist', path: '/wishlist', badge: wishlistItems.length },
     { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: getItemCount() },
-    {
-      icon: User,
-      label: 'Account',
-      path: isAuthenticated ? '/account' : '/login',
-    },
   ];
 
   return (

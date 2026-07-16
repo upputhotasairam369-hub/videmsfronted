@@ -21,8 +21,8 @@ const LoginPage = () => {
 
   const from = location.state?.from?.pathname || '/';
   
-  // Use VITE_GOOGLE_CLIENT_ID from env
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
+  // Use REACT_APP_GOOGLE_CLIENT_ID from env
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -136,6 +136,39 @@ const LoginPage = () => {
               />
             </div>
             
+            <div className="relative flex items-center py-2">
+              <div className="flex-grow border-t border-gray-200"></div>
+              <span className="flex-shrink-0 mx-4 text-gray-400 text-xs font-semibold uppercase">Or continue with email</span>
+              <div className="flex-grow border-t border-gray-200"></div>
+            </div>
+
+            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert("Email login functionality coming soon!"); }}>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-2">Email</label>
+                <input
+                  type="email"
+                  required
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:border-[#f97316] outline-none transition-colors"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-2">Password</label>
+                <input
+                  type="password"
+                  required
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:border-[#f97316] outline-none transition-colors"
+                  placeholder="Enter your password"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-gray-900 text-white py-3 rounded-xl font-bold tracking-wide hover:bg-black transition flex items-center justify-center"
+              >
+                SIGN IN
+              </button>
+            </form>
+
             {loading && (
               <div className="flex justify-center mt-4">
                 <Loader className="w-6 h-6 animate-spin text-[#f97316]" />

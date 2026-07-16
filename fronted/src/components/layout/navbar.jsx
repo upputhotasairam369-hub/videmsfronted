@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, ShoppingCart, Menu, X, User, Heart, Home, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
-import { useSelector } from 'react-redux'; // 🚀 Imported Redux hook
+import { Search, ShoppingCart, X, User, Heart, Home, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { useSelector } from 'react-redux';
 import { useCart } from '../../hooks/usecart';
 import { useWishlist } from '../../hooks/useWishlist';
+import MegaMenu from './megamenu';
 
 const Navbar = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMobileCat, setActiveMobileCat] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -25,31 +25,20 @@ const Navbar = () => {
   const { items: wishlistItems = [] } = useWishlist();
   const wishlistCount = wishlistItems.length;
 
-  const navCategories = ['LIVING ROOM', 'BEDROOM', 'DINING', 'STUDY'];
+  const [categories, setCategories] = useState([]);
 
-  const megaMenuData = {
-    'LIVING ROOM': [
-      { title: 'Sofas', links: ['Fabric Sofas', 'Wooden Sofas', 'L-Shaped Sofas', 'Sofa Cum Beds', 'Recliners'] },
-      { title: 'Seating', links: ['Lounge Chairs', 'Accent Chairs', 'Wing Chairs', 'Benches', 'Pouffes'] },
-      { title: 'Tables', links: ['Coffee Tables', 'Side Tables', 'Console Tables', 'End Tables'] },
-      { title: 'Storage', links: ['TV Units', 'Bookshelves', 'Display Units', 'Shoe Racks'] }
-    ],
-    'BEDROOM': [
-      { title: 'Beds', links: ['Solid Wood Beds', 'Upholstered Beds', 'Beds with Storage', 'King Size Beds', 'Queen Size Beds'] },
-      { title: 'Storage', links: ['Wardrobes', 'Chest of Drawers', 'Bedside Tables', 'Dressers'] },
-      { title: 'Mattresses', links: ['Memory Foam', 'Orthopedic', 'Dual Comfort', 'Coir Mattresses'] }
-    ],
-    'DINING': [
-      { title: 'Dining Sets', links: ['4 Seater Dining Sets', '6 Seater Dining Sets', '8 Seater Dining Sets', 'Extendable Dining'] },
-      { title: 'Dining Storage', links: ['Crockery Units', 'Kitchen Cabinets', 'Sideboards'] },
-      { title: 'Dining Decor', links: ['Table Linens', 'Coasters', 'Dining Serveware'] }
-    ],
-    'STUDY': [
-      { title: 'Study Tables', links: ['Solid Wood Tables', 'Computer Tables', 'Foldable Tables'] },
-      { title: 'Office Chairs', links: ['Ergonomic Chairs', 'Executive Chairs', 'Study Chairs'] },
-      { title: 'Office Storage', links: ['File Cabinets', 'Office Bookcases', 'Wall Shelves'] }
-    ]
-  };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { getCategories } = await import('../../../services/api');
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error('Failed to fetch categories:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const toTitleCase = (str) =>
     str.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
@@ -62,7 +51,6 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsSearchActive(false);
-    setIsMenuOpen(false);
     setActiveMobileCat(null);
   }, [location.pathname]);
 
@@ -135,42 +123,34 @@ const Navbar = () => {
     <>
       <header className={`w-full sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-md' : 'bg-white shadow-sm'}`}>
 
-        <div className={`w-full py-1 border-b border-gray-200 transition-colors duration-300 ${isScrolled ? 'bg-transparent' : 'bg-gray-50'}`}>
-          <p className="text-center text-[10px] md:text-xs text-gray-700 select-none">
+        <div className={`w-full py-1 md:py-1.5 lg:py-2 border-b border-gray-200 transition-colors duration-300 ${isScrolled ? 'bg-transparent' : 'bg-gray-50'}`}>
+          <p className="text-center text-xs md:text-sm lg:text-base text-gray-700 select-none">
             Free Shipping on Orders Above ₹10,000 | <span className="text-[#f97316] font-semibold">Use Code: VIDEM10</span>
           </p>
         </div>
 
-        <div className="container mx-auto px-4 py-2 relative flex items-center justify-between">
-          <button
-            className="md:hidden p-1 z-20 text-gray-700 hover:text-[#f97316] transition-colors outline-none focus:outline-none focus:ring-0 border-none shadow-none"
-            onClick={() => setIsMenuOpen(true)}
-            style={{ WebkitTapHighlightColor: 'transparent' }}
-          >
-            <Menu size={24} />
-          </button>
-
+        <div className="container mx-auto px-2 md:px-4 lg:px-6 py-2 lg:py-2 relative flex items-center justify-between">
           <Link
             to="/"
-            className="group absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 z-10 flex items-center gap-2 outline-none focus:outline-none focus:ring-0 border-none select-none"
+            className="group z-10 flex items-center gap-2 md:gap-3 lg:gap-3 outline-none focus:outline-none focus:ring-0 border-none select-none"
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
-            <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Videm's Gallery Logo" className="h-7 w-7 md:h-8 md:w-8 object-cover rounded-md" />
-            <h1 className="text-lg md:text-xl font-bold tracking-tight whitespace-nowrap">
+            <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Videm's Gallery Logo" className="h-8 w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 object-cover rounded-md" />
+            <h1 className="text-xl md:text-xl lg:text-2xl font-bold tracking-tight whitespace-nowrap">
               <span className="text-gray-900 group-hover:text-[#f97316] transition-colors duration-300">Videm's</span>{' '}
               <span className="text-[#f97316] group-hover:text-gray-900 transition-colors duration-300">Gallery</span>
             </h1>
           </Link>
 
-          <form onSubmit={handleDesktopSearchSubmit} className="hidden md:flex flex-1 max-w-2xl mx-8 h-9">
+          <form onSubmit={handleDesktopSearchSubmit} className="hidden md:flex flex-1 md:max-w-md lg:max-w-2xl md:mx-4 lg:mx-8 md:h-9 lg:h-10">
             <input
               ref={desktopSearchInputRef}
               type="text"
               placeholder="Search for furniture and more..."
-              className="flex-1 h-full bg-gray-100 text-sm text-gray-800 outline-none rounded-l-md px-4 focus:ring-1 focus:ring-[#f97316] transition-all border-none"
+              className="flex-1 h-full bg-gray-100 text-sm md:text-sm lg:text-base text-gray-800 outline-none rounded-l-md px-4 focus:ring-1 focus:ring-[#f97316] transition-all border-none"
             />
-            <button type="submit" className="h-9 w-11 flex-shrink-0 flex items-center justify-center bg-[#f97316] text-white rounded-r-md hover:bg-[#e8600a] transition-colors outline-none focus:outline-none focus:ring-0 border-none shadow-none select-none">
-              <Search size={18} />
+            <button type="submit" className="md:h-9 lg:h-10 md:w-10 lg:w-12 flex-shrink-0 flex items-center justify-center bg-[#f97316] text-white rounded-r-md hover:bg-[#e8600a] transition-colors outline-none focus:outline-none focus:ring-0 border-none shadow-none select-none">
+              <Search className="w-5 h-5 lg:w-5 lg:h-5" />
             </button>
           </form>
 
@@ -185,28 +165,28 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div className="hidden md:flex items-center gap-1 lg:gap-3 flex-shrink-0">
+            <div className="hidden md:flex items-center gap-1 md:gap-2 lg:gap-3 flex-shrink-0">
               {/* 🚀 Updated Desktop Profile Link */}
-              <Link to={isAuthenticated ? "/account" : "/login"} className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:bg-orange-50 hover:text-[#f97316] transition-all duration-300 outline-none focus:outline-none focus:ring-0 border-none shadow-none" title="Profile" style={{ WebkitTapHighlightColor: 'transparent' }}>
-                <User size={22} className={isAuthenticated ? "text-[#f97316]" : ""} />
+              <Link to={isAuthenticated ? "/account" : "/login"} className="w-10 h-10 md:w-10 md:h-10 lg:w-11 lg:h-11 flex items-center justify-center rounded-full text-gray-600 hover:bg-orange-50 hover:text-[#f97316] transition-all duration-300 outline-none focus:outline-none focus:ring-0 border-none shadow-none" title="Profile" style={{ WebkitTapHighlightColor: 'transparent' }}>
+                <User className={`w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 ${isAuthenticated ? "text-[#f97316]" : ""}`} />
               </Link>
 
-              <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:bg-orange-50 hover:text-[#f97316] transition-all duration-300 outline-none focus:outline-none focus:ring-0 border-none shadow-none" title="Wishlist" style={{ WebkitTapHighlightColor: 'transparent' }}>
+              <Link to="/wishlist" className="w-10 h-10 md:w-10 md:h-10 lg:w-11 lg:h-11 flex items-center justify-center rounded-full text-gray-600 hover:bg-orange-50 hover:text-[#f97316] transition-all duration-300 outline-none focus:outline-none focus:ring-0 border-none shadow-none" title="Wishlist" style={{ WebkitTapHighlightColor: 'transparent' }}>
                 <div className="relative flex items-center justify-center">
-                  <Heart size={22} />
+                  <Heart className="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6" />
                   {wishlistCount > 0 && (
-                    <span className="absolute -top-1.5 -right-2 bg-[#f97316] text-white text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center border border-white">
+                    <span className="absolute -top-1.5 -right-2 bg-[#f97316] text-white text-[9px] md:text-[10px] lg:text-[11px] font-bold h-4 w-4 md:h-[18px] md:w-[18px] lg:h-5 lg:w-5 rounded-full flex items-center justify-center border border-white">
                       {wishlistCount > 99 ? '99+' : wishlistCount}
                     </span>
                   )}
                 </div>
               </Link>
 
-              <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:bg-orange-50 hover:text-[#f97316] transition-all duration-300 outline-none focus:outline-none focus:ring-0 border-none shadow-none" title="Cart" style={{ WebkitTapHighlightColor: 'transparent' }}>
+              <Link to="/cart" className="w-10 h-10 md:w-10 md:h-10 lg:w-11 lg:h-11 flex items-center justify-center rounded-full text-gray-600 hover:bg-orange-50 hover:text-[#f97316] transition-all duration-300 outline-none focus:outline-none focus:ring-0 border-none shadow-none" title="Cart" style={{ WebkitTapHighlightColor: 'transparent' }}>
                 <div className="relative flex items-center justify-center">
-                  <ShoppingCart size={22} />
+                  <ShoppingCart className="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6" />
                   {cartCount > 0 && (
-                    <span className="absolute -top-1.5 -right-2 bg-[#f97316] text-white text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center border border-white">
+                    <span className="absolute -top-1.5 -right-2 bg-[#f97316] text-white text-[9px] md:text-[10px] lg:text-[11px] font-bold h-4 w-4 md:h-[18px] md:w-[18px] lg:h-5 lg:w-5 rounded-full flex items-center justify-center border border-white">
                       {cartCount > 99 ? '99+' : cartCount}
                     </span>
                   )}
@@ -228,47 +208,22 @@ const Navbar = () => {
 
         {/* Desktop Category Nav + Mega Menu */}
         <div className={`hidden md:block w-full border-t border-gray-100 relative transition-colors duration-300 ${isScrolled ? 'bg-transparent' : 'bg-white'}`}>
-          <div className="container mx-auto px-4">
-            <ul className="flex items-center justify-center space-x-12">
-              {navCategories.map((category) => (
-                <li key={category} className="group py-2.5">
+          <div className="container mx-auto md:px-4 lg:px-8">
+            <ul className="flex items-center justify-center md:space-x-8 lg:space-x-12">
+              {categories.map((category) => (
+                <li key={category.id || category.name} className="group py-2 lg:py-2.5">
                   <Link
-                    to={`/products?category=${encodeURIComponent(toTitleCase(category))}`}
-                    className="relative text-xs font-bold text-gray-800 group-hover:text-[#f97316] tracking-wide transition-colors inline-block outline-none focus:outline-none focus:ring-0 border-none select-none"
+                    to={`/products?category=${encodeURIComponent(category.name)}`}
+                    className="relative text-xs md:text-xs lg:text-sm font-bold text-gray-800 group-hover:text-[#f97316] tracking-wide transition-colors inline-block outline-none focus:outline-none focus:ring-0 border-none select-none uppercase"
                     style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
-                    {category}
+                    {category.name}
                     <span className="absolute -bottom-1 left-1/2 w-0 h-[2px] bg-[#f97316] -translate-x-1/2 transition-all duration-300 ease-out group-hover:w-full"></span>
                   </Link>
 
                   {/* Mega Menu Dropdown */}
                   <div className="absolute left-0 top-full w-full bg-white shadow-xl border-t border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                    <div className="container mx-auto px-12 py-6 flex justify-start gap-16">
-                      {megaMenuData[category]?.map((column) => (
-                        <div key={column.title} className="flex flex-col min-w-[150px]">
-                          <Link
-                            to={`/products?category=${encodeURIComponent(toTitleCase(category))}&subcategory=${encodeURIComponent(column.title)}`}
-                            className="text-gray-900 font-bold mb-3 uppercase text-xs tracking-wider border-b border-gray-200 pb-2 hover:text-[#f97316] transition-colors outline-none focus:outline-none select-none block"
-                            style={{ WebkitTapHighlightColor: 'transparent' }}
-                          >
-                            {column.title}
-                          </Link>
-                          <ul className="space-y-2.5">
-                            {column.links.map((link) => (
-                              <li key={link}>
-                                <Link
-                                  to={`/products?category=${encodeURIComponent(toTitleCase(category))}&subcategory=${encodeURIComponent(link)}`}
-                                  className="text-gray-500 hover:text-[#f97316] text-xs transition-colors block outline-none focus:outline-none focus:ring-0 border-none select-none"
-                                  style={{ WebkitTapHighlightColor: 'transparent' }}
-                                >
-                                  {link}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
+                    <MegaMenu category={category} onClose={() => { }} />
                   </div>
                 </li>
               ))}
@@ -276,75 +231,6 @@ const Navbar = () => {
           </div>
         </div>
       </header>
-
-      {/* Mobile Sidebar Drawer */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-white z-50 md:hidden flex flex-col shadow-2xl">
-          <div className="p-3 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              className="text-gray-700 hover:text-[#f97316] transition-colors outline-none focus:outline-none focus:ring-0 border-none shadow-none"
-              style={{ WebkitTapHighlightColor: 'transparent' }}
-            >
-              <X size={26} />
-            </button>
-            <div className="flex items-center gap-2 select-none">
-              <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Logo" className="h-7 w-7 object-cover rounded-md" />
-              <h1 className="text-lg font-bold tracking-tight text-gray-900">
-                Videm's <span className="text-[#f97316]">Gallery</span>
-              </h1>
-            </div>
-            <div className="w-7"></div>
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-4 pb-24">
-            {navCategories.map((mainCat) => (
-              <div key={mainCat} className="border-b border-gray-100 last:border-none">
-                <button
-                  onClick={() => toggleMobileCategory(mainCat)}
-                  className="w-full flex items-center justify-between py-3.5 text-left font-bold text-gray-900 text-sm uppercase tracking-wide outline-none focus:outline-none focus:ring-0 border-none shadow-none"
-                  style={{ WebkitTapHighlightColor: 'transparent' }}
-                >
-                  <span>{mainCat}</span>
-                  {activeMobileCat === mainCat ? <ChevronUp size={18} className="text-[#f97316]" /> : <ChevronDown size={18} />}
-                </button>
-
-                <div className={`transition-all duration-300 overflow-hidden ${activeMobileCat === mainCat ? 'max-h-[1000px] opacity-100 pb-3' : 'max-h-0 opacity-0'}`}>
-                  <div className="space-y-3 pl-2">
-                    {megaMenuData[mainCat]?.map((group) => (
-                      <div key={group.title}>
-                        <Link
-                          to={`/products?category=${encodeURIComponent(toTitleCase(mainCat))}&subcategory=${encodeURIComponent(group.title)}`}
-                          onClick={() => setIsMenuOpen(false)}
-                          className="text-xs font-bold text-[#f97316] uppercase tracking-wide mb-2 mt-1 select-none block outline-none focus:outline-none border-none"
-                          style={{ WebkitTapHighlightColor: 'transparent' }}
-                        >
-                          {group.title}
-                        </Link>
-                        <ul className="space-y-2 pl-3 border-l-2 border-gray-100">
-                          {group.links.map((link) => (
-                            <li key={link}>
-                              <Link
-                                to={`/products?category=${encodeURIComponent(toTitleCase(mainCat))}&subcategory=${encodeURIComponent(link)}`}
-                                onClick={() => setIsMenuOpen(false)}
-                                className="group relative inline-block text-xs text-gray-600 hover:text-[#f97316] transition-colors py-1 outline-none focus:outline-none focus:ring-0 border-none select-none"
-                                style={{ WebkitTapHighlightColor: 'transparent' }}
-                              >
-                                {link}
-                                <span className="absolute bottom-0 left-1/2 w-0 h-[1.5px] bg-[#f97316] -translate-x-1/2 transition-all duration-300 ease-out group-hover:w-full"></span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Mobile Bottom Nav */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 pb-2 pt-2 px-2">

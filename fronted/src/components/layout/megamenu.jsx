@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 const MegaMenu = ({ category, onClose }) => {
   const navigate = useNavigate();
 
-  const handleSubClick = (sub) => {
-    navigate(`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(sub)}`);
+  const handleSubClick = (subName) => {
+    navigate(`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(subName)}`);
     onClose();
   };
 
@@ -30,22 +30,22 @@ const MegaMenu = ({ category, onClose }) => {
               {category.name}
             </h3>
             <div className="grid grid-cols-3 gap-4">
-              {category.subcategories.map((sub) => (
+              {category.subcategories && category.subcategories.map((sub) => (
                 <button
-                  key={sub}
-                  onClick={() => handleSubClick(sub)}
+                  key={sub.id || sub.name}
+                  onClick={() => handleSubClick(sub.name)}
                   className="group flex items-center p-3 rounded-lg hover:bg-gray-50 transition outline-none focus:outline-none border-none bg-transparent w-full text-left"
                   style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <div className="w-12 h-12 bg-gray-100 rounded-md mr-3 flex-shrink-0 overflow-hidden">
                     <img
-                      src={`https://placehold.co/100x100/d2bab0/4a3229?text=${sub[0]}`}
-                      alt={sub}
+                      src={`https://placehold.co/100x100/d2bab0/4a3229?text=${sub.name[0]}`}
+                      alt={sub.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <span className="text-sm font-medium text-gray-700 group-hover:text-[#f97316]">
-                    {sub}
+                    {sub.name}
                   </span>
                 </button>
               ))}

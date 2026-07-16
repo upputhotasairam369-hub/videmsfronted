@@ -6,7 +6,7 @@ const CategoryCard = ({ category }) => {
 
     return (
         <Link
-            to={`/shop/${category.slug}`}
+            to={`/products?category=${encodeURIComponent(category.name)}`}
             className="group flex flex-col block cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-900 rounded-xl"
             aria-label={`Shop ${category.name} category`}
         >

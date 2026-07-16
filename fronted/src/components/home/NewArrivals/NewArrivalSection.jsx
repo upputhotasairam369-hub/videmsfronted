@@ -20,19 +20,19 @@ const NewArrivalSection = () => {
   }
 
   return (
-    <section className="py-12 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="flex items-end justify-between mb-8 border-b border-gray-100 pb-4">
+    <section className="w-full bg-white">
+      <div className="max-w-screen-2xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 lg:py-16">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-12 border-b border-gray-100 pb-4 md:pb-6">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">New Arrivals</h2>
-            <p className="text-sm md:text-base text-gray-500 mt-2">Fresh designs for your home</p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">New Arrivals</h2>
+            <p className="mt-3 md:mt-4 text-base md:text-lg text-gray-500">Fresh designs for your home</p>
           </div>
-          <Link to="/products" className="text-sm font-bold text-[#f97316] hover:text-[#ea580c] hidden md:flex items-center uppercase tracking-wide transition">
+          <Link to="/products" className="mt-4 md:mt-0 text-sm md:text-base font-bold text-[#f97316] hover:text-[#ea580c] flex items-center uppercase tracking-wide transition">
             View All Collection
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 w-full">
           {loading ? (
             Array.from({ length: 5 }).map((_, idx) => (
               <NewArrivalSkeleton key={idx} />
