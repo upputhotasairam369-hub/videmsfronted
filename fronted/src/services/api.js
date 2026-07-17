@@ -1,10 +1,9 @@
 // src/services/api.js
 import axios from 'axios';
-
-// 1. HARDCODE the known working URL to guarantee connection and bypass Vercel Env issues.
-// Note: It strictly ends in /api/ to ensure routes like /api/products/ resolve correctly.
+// 1. Point to your Railway backend
+// (To test locally, uncomment the localhost URL and comment the Railway URL)
 const API_BASE_URL = 'https://videmsbackend-production.up.railway.app/api/';
-
+// const API_BASE_URL = 'http://127.0.0.1:8000/api/';
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
