@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 const CategoryPills = () => {
-    const categories = ['All', 'Living', 'Bedroom', 'Dining', 'Mattress', 'Decor'];
-    const [activeCategory, setActiveCategory] = useState('Living');
+    const categories = ['All', 'Sofas', 'Beds', 'Dining', 'Mattress', 'Decor'];
+    const [activeCategory, setActiveCategory] = useState('Sofas');
 
     return (
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 py-8 px-4 w-full">

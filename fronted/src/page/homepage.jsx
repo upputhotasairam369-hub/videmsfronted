@@ -22,14 +22,14 @@ const HomePage = () => {
     {
       id: 1,
       image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=600&fit=crop',
-      title: 'Modern Living Room Sets',
+      title: 'Modern Sofas Collection',
       subtitle: 'Transform your space with our premium collection',
       tag: 'Best Seller',
     },
     {
       id: 2,
       image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&h=600&fit=crop',
-      title: 'Cozy Bedroom Essentials',
+      title: 'Cozy Beds & Essentials',
       subtitle: 'Sleep in comfort and style',
       tag: 'New',
     },

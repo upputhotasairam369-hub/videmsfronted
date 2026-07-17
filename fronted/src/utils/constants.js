@@ -16,10 +16,8 @@ export const PAYMENT_STATUS = {
 };
 
 export const CATEGORIES = [
-  'Living Room',
-  'Bedroom',
+  'Sofas',
   'Dining',
-  'Study',
-  'Decor',
-  'Outdoor',
+  'Beds',
+  'Office Tables & Study Chair'
 ];

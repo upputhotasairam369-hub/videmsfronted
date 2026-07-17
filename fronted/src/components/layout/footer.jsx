@@ -104,12 +104,11 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-bold mb-6 text-lg tracking-wide uppercase">Top Categories</h4>
             <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link to="/category/living-room" className="hover:text-brand-orange transition">Living Room</Link></li>
-              <li><Link to="/category/bedroom" className="hover:text-brand-orange transition">Bedroom</Link></li>
-              <li><Link to="/category/dining" className="hover:text-brand-orange transition">Dining Room</Link></li>
-              <li><Link to="/category/study" className="hover:text-brand-orange transition">Study & Office</Link></li>
-              <li><Link to="/category/decor" className="hover:text-brand-orange transition">Home Decor</Link></li>
-              <li><Link to="/category/outdoor" className="hover:text-brand-orange transition">Outdoor</Link></li>
+              <li><Link to="/category/sofas" className="hover:text-brand-orange transition">Sofas</Link></li>
+              <li><Link to="/category/beds" className="hover:text-brand-orange transition">Beds</Link></li>
+              <li><Link to="/category/dining" className="hover:text-brand-orange transition">Dining</Link></li>
+              <li><Link to="/category/office-tables-study-chair" className="hover:text-brand-orange transition">Office Tables & Study Chair</Link></li>
+
             </ul>
           </div>
 

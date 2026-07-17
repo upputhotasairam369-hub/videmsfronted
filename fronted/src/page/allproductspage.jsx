@@ -7,26 +7,17 @@ import LoadingSpinner from '../components/common/lodingspinner';
 import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 
 const SIDEBAR_CATEGORIES = {
-    'LIVING ROOM': {
-        'SOFAS': ['Fabric Sofas', 'Wooden Sofas', 'L-Shaped Sofas', 'Sofa Cum Beds', 'Recliners'],
-        'SEATING': ['Lounge Chairs', 'Accent Chairs', 'Wing Chairs', 'Benches', 'Pouffes'],
-        'TABLES': ['Coffee Tables', 'Side Tables', 'Console Tables', 'End Tables'],
-        'STORAGE': ['TV Units', 'Bookshelves', 'Display Units', 'Shoe Racks']
-    },
-    'BEDROOM': {
-        'BEDS': ['Solid Wood Beds', 'Upholstered Beds', 'Beds with Storage', 'King Size Beds', 'Queen Size Beds'],
-        'STORAGE': ['Wardrobes', 'Chest of Drawers', 'Bedside Tables', 'Dressers'],
-        'MATTRESSES': ['Memory Foam', 'Orthopedic', 'Dual Comfort', 'Coir Mattresses']
+    'SOFAS': {
+        'SOFAS': ['Fabric Sofas', 'Wooden Sofas', 'L-Shaped Sofas', 'Sofas Cum Beds', 'Recliners']
     },
     'DINING': {
-        'DINING SETS': ['4 Seater Dining Sets', '6 Seater Dining Sets', '8 Seater Dining Sets', 'Extendable Dining'],
-        'DINING STORAGE': ['Crockery Units', 'Kitchen Cabinets', 'Sideboards'],
-        'DINING DECOR': ['Table Linens', 'Coasters', 'Dining Serveware']
+        'DINING SETS': ['4 Seater Dining Sets', '6 - Seater Dining Sets', '8 - Seater Dining Sets', 'Extendable Dining']
     },
-    'STUDY': {
-        'STUDY TABLES': ['Solid Wood Tables', 'Computer Tables', 'Foldable Tables'],
-        'OFFICE CHAIRS': ['Ergonomic Chairs', 'Executive Chairs', 'Study Chairs'],
-        'OFFICE STORAGE': ['File Cabinets', 'Office Bookcases', 'Wall Shelves']
+    'BEDS': {
+        'BEDS': ['Solid Wood Beds', 'Upholstered Beds', 'Beds with Storage', 'King Size Beds', 'Queen Size Beds']
+    },
+    'OFFICE TABLES & STUDY CHAIR': {
+        'OFFICE FURNITURE': ['L - Shape Office - Tables', 'Executive - Chairs', 'Study Chair', 'Waiting - Chairs', 'Single Gaming Chair']
     }
 };
 
