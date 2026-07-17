@@ -4,7 +4,6 @@ import { Search, ShoppingCart, X, User, Heart, Home, ChevronDown, ChevronUp, Arr
 import { useSelector } from 'react-redux';
 import { useCart } from '../../hooks/usecart';
 import { useWishlist } from '../../hooks/useWishlist';
-import MegaMenu from './megamenu';
 
 const Navbar = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -24,21 +23,6 @@ const Navbar = () => {
 
   const { items: wishlistItems = [] } = useWishlist();
   const wishlistCount = wishlistItems.length;
-
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const { getCategories } = await import('../../services/api');
-        const data = await getCategories();
-        setCategories(data);
-      } catch (err) {
-        console.error('Failed to fetch categories:', err);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   const toTitleCase = (str) =>
     str.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
@@ -206,30 +190,7 @@ const Navbar = () => {
           </form>
         </div>
 
-        {/* Desktop Category Nav + Mega Menu */}
-        <div className={`hidden md:block w-full border-t border-gray-100 relative transition-colors duration-300 ${isScrolled ? 'bg-transparent' : 'bg-white'}`}>
-          <div className="container mx-auto md:px-4 lg:px-8">
-            <ul className="flex items-center justify-center md:space-x-8 lg:space-x-12">
-              {categories.map((category) => (
-                <li key={category.id || category.name} className="group py-2 lg:py-2.5">
-                  <Link
-                    to={`/products?category=${encodeURIComponent(category.name)}`}
-                    className="relative text-xs md:text-xs lg:text-sm font-bold text-gray-800 group-hover:text-[#f97316] tracking-wide transition-colors inline-block outline-none focus:outline-none focus:ring-0 border-none select-none uppercase"
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
-                  >
-                    {category.name}
-                    <span className="absolute -bottom-1 left-1/2 w-0 h-[2px] bg-[#f97316] -translate-x-1/2 transition-all duration-300 ease-out group-hover:w-full"></span>
-                  </Link>
 
-                  {/* Mega Menu Dropdown */}
-                  <div className="absolute left-0 top-full w-full bg-white shadow-xl border-t border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                    <MegaMenu category={category} onClose={() => { }} />
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </header>
 
       {/* Mobile Bottom Nav */}
