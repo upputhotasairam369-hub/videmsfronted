@@ -33,14 +33,24 @@ const BusinessBanner = () => {
 
   if (!banner) return null;
 
+  // Smart URL Builder to fix HTTP/HTTPS and relative path issues
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('https://')) return imagePath;
+    if (imagePath.startsWith('http://')) return imagePath.replace('http://', 'https://');
+    return `https://videmsbackend-production.up.railway.app${imagePath}`;
+  };
+
   return (
     <>
-      <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 relative group cursor-default">
+      {/* Added more padding on desktop to improve aspect ratio so cover doesn't crop too much */}
+      <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 lg:px-24 xl:px-40 py-8 md:py-12 relative group cursor-default">
+        {/* Increased desktop height to lg:h-[550px] to give the image more vertical breathing room */}
         <div
-          className="relative rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:shadow-3xl flex flex-col justify-center items-center text-center h-72 md:h-96 lg:h-[450px]"
+          className="relative rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:shadow-3xl flex flex-col justify-center items-center text-center h-72 md:h-[400px] lg:h-[550px]"
           style={{
-            backgroundImage: `url(${banner.image})`,
-            backgroundSize: '100% 100%',
+            backgroundImage: `url(${getImageUrl(banner.image)})`,
+            backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
           }}
