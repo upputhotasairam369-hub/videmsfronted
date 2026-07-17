@@ -33,32 +33,24 @@ const BusinessBanner = () => {
 
   if (!banner) return null;
 
-  // Smart URL Builder to fix HTTP/HTTPS and relative path issues
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('https://')) return imagePath;
-    if (imagePath.startsWith('http://')) return imagePath.replace('http://', 'https://');
-    return `https://videmsbackend-production.up.railway.app${imagePath}`;
-  };
-
   return (
     <>
       <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 relative group cursor-default">
-        <div 
+        <div
           className="relative rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:shadow-3xl flex flex-col justify-center items-center text-center h-72 md:h-96 lg:h-[450px]"
           style={{
-            backgroundImage: `url(${getImageUrl(banner.image)})`,
-            backgroundSize: 'contain',
+            backgroundImage: `url(${banner.image})`,
+            backgroundSize: '100% 100%',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
           }}
         >
           {/* Glassmorphism overlay */}
-          <div 
-            className="absolute inset-0" 
+          <div
+            className="absolute inset-0"
             style={{ background: banner.gradient_overlay || 'linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4))' }}
           ></div>
-          
+
           <div className="relative z-10 p-6 md:p-12 max-w-3xl mx-auto flex flex-col items-center">
             <span className="text-white/80 text-xs md:text-sm lg:text-base font-semibold tracking-widest uppercase mb-4 opacity-0 transform translate-y-4 animate-[fade-in-up_0.8s_ease-out_forwards]">
               {banner.small_heading}
@@ -79,7 +71,7 @@ const BusinessBanner = () => {
           </div>
         </div>
       </div>
-      
+
       {isModalOpen && <BulkOrderModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
     </>
   );
