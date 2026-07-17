@@ -30,7 +30,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { getCategories } = await import('../../../services/api');
+        const { getCategories } = await import('../../services/api');
         const data = await getCategories();
         setCategories(data);
       } catch (err) {
