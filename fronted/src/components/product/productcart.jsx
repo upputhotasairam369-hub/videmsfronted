@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Heart, ShoppingCart, CheckCircle2, Clock, Check } from 'lucide-react';
 import { useCart } from '../../hooks/usecart';
 import { useWishlist } from '../../hooks/useWishlist';
 
-const ProductCard = ({ product }) => {
+const ProductCard = memo(({ product }) => {
   const { items: cartItems = [], addItem } = useCart();
 
   const wishlist = useWishlist() || {};
@@ -121,6 +121,8 @@ const ProductCard = ({ product }) => {
             <img
               src={displayImage}
               alt={name}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               onError={(e) => {
                 e.target.onerror = null;
@@ -235,6 +237,6 @@ const ProductCard = ({ product }) => {
       )}
     </>
   );
-};
+});
 
 export default ProductCard;
