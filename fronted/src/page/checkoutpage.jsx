@@ -153,14 +153,10 @@ const CheckoutPage = () => {
   const validItems = items.filter(item => item && item.productId && String(item.productId) !== 'undefined');
 
   useEffect(() => {
-    if (!currentUser) {
-      navigate('/login');
-      return;
-    }
     if (validItems.length === 0) {
       navigate('/cart');
     }
-  }, [currentUser, validItems.length, navigate]);
+  }, [validItems.length, navigate]);
 
   const hasAutoFilled = useRef(false);
 
@@ -485,8 +481,6 @@ const CheckoutPage = () => {
       setLoadingPayment(false);
     }
   };
-
-  if (!currentUser) return null;
 
   return (
     <div className="bg-[#f4f5f7] min-h-screen py-6 md:py-10 font-sans">

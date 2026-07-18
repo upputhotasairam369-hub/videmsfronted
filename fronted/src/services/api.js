@@ -4,7 +4,7 @@ import axios from 'axios';
 // 1. Point to your Railway backend
 // (To test locally, uncomment the localhost URL and comment the Railway URL)
 const API_BASE_URL = 'https://videmsbackend-production.up.railway.app/api/';
-// const API_BASE_URL = 'http://127.0.0.1:8000/api/';
+//const API_BASE_URL = 'http://127.0.0.1:8000/api/';
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
