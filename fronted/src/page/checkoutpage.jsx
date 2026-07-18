@@ -25,38 +25,26 @@ const loadRazorpayScript = () => {
 // 🚀 2. THE HARDWARE GPS WARM-UP LOOP (MAX ACCURACY)
 // ========================================================
 const getHardwareGPSLock = (onSuccess, onError) => {
-  let gpsLocked = false;
+  if (!navigator.geolocation) {
+    onError({ code: 0, message: "Geolocation not supported" });
+    return;
+  }
 
-  // watchPosition forces the physical GPS chip to turn on and stream data
-  const watchId = navigator.geolocation.watchPosition(
+  // Directly request high-accuracy device location.
+  // This natively triggers the OS-level permission prompt on mobile and waits.
+  navigator.geolocation.getCurrentPosition(
     (position) => {
-      // Accuracy is measured in meters. Anything under 50m is a confirmed satellite lock.
-      if (position.coords.accuracy <= 50) {
-        gpsLocked = true;
-        navigator.geolocation.clearWatch(watchId);
-        onSuccess(position);
-      }
+      onSuccess(position);
     },
     (error) => {
-      // If the user denied permissions, catch it immediately
-      navigator.geolocation.clearWatch(watchId);
       onError(error);
     },
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
-  );
-
-  // Fallback: If the user is indoors (thick roof) and can't get a strict <50m satellite lock 
-  // after 8 seconds, we stop watching and accept the best possible location the device has.
-  setTimeout(() => {
-    if (!gpsLocked) {
-      navigator.geolocation.clearWatch(watchId);
-      navigator.geolocation.getCurrentPosition(onSuccess, onError, {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-      });
+    {
+      enableHighAccuracy: true,
+      timeout: 30000, // 30 seconds to allow the user time to accept the permission prompt
+      maximumAge: 0   // Force live hardware GPS reading
     }
-  }, 8000);
+  );
 };
 
 // ========================================================
@@ -523,15 +511,19 @@ const CheckoutPage = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="flex items-center gap-1.5 text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                      Customer Full Name * <Lock size={12} className="text-gray-400" />
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Customer Full Name *
                     </label>
                     <input
                       type="text"
-                      readOnly
                       value={shipping.fullName}
-                      className="w-full px-4 py-3 rounded-xl text-sm border border-gray-200 bg-gray-100 text-gray-600 outline-none cursor-not-allowed select-none"
-                      placeholder="Auto-filled from Account"
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setShipping(prev => ({ ...prev, fullName: val }));
+                        if (errors.shipping_fullName) setErrors(prev => ({ ...prev, shipping_fullName: null }));
+                      }}
+                      className={`w-full px-4 py-3 rounded-xl text-sm border ${errors.shipping_fullName ? 'border-red-500 focus:ring-red-200 bg-red-50' : 'border-gray-200 focus:border-[#e87831]'} outline-none transition-all`}
+                      placeholder="Enter Full Name"
                     />
                     {errors.shipping_fullName && <p className="text-red-500 text-xs mt-1">{errors.shipping_fullName}</p>}
                   </div>
