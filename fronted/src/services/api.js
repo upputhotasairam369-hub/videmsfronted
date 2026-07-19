@@ -16,6 +16,15 @@ apiClient.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  
+  // Globally prevent mobile browser caching on all GET requests
+  if (config.method === 'get') {
+    config.params = {
+      ...config.params,
+      t: new Date().getTime()
+    };
+  }
+  
   return config;
 });
 
@@ -67,7 +76,7 @@ export const adminAPI = {
 };
 
 export const publicAPI = {
-  getBanners: () => apiClient.get(`banners/?t=${new Date().getTime()}`),
+  getBanners: () => apiClient.get('banners/'),
 };
 
 export const orderAPI = {
