@@ -67,7 +67,7 @@ export const adminAPI = {
 };
 
 export const publicAPI = {
-  getBanners: () => apiClient.get('banners/'),
+  getBanners: () => apiClient.get(`banners/?t=${new Date().getTime()}`),
 };
 
 export const orderAPI = {
