@@ -16,15 +16,6 @@ apiClient.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
-  // Globally prevent mobile browser caching on all GET requests
-  if (config.method === 'get') {
-    config.params = {
-      ...config.params,
-      t: new Date().getTime()
-    };
-  }
-  
   return config;
 });
 
@@ -69,14 +60,14 @@ export const cartAPI = {
 };
 
 export const adminAPI = {
-  dashboard: () => apiClient.get('admin-api/dashboard/'),
-  products: (params) => apiClient.get('products/', { params }),
-  orders: (params) => apiClient.get('admin-api/orders/', { params }),
-  users: (params) => apiClient.get('admin-api/users/', { params }),
+  dashboard: () => apiClient.get(`admin-api/dashboard/?t=${new Date().getTime()}`),
+  products: (params) => apiClient.get(`products/?t=${new Date().getTime()}`, { params }),
+  orders: (params) => apiClient.get(`admin-api/orders/?t=${new Date().getTime()}`, { params }),
+  users: (params) => apiClient.get(`admin-api/users/?t=${new Date().getTime()}`, { params }),
 };
 
 export const publicAPI = {
-  getBanners: () => apiClient.get('banners/'),
+  getBanners: () => apiClient.get(`banners/?t=${new Date().getTime()}`),
 };
 
 export const orderAPI = {
@@ -87,7 +78,7 @@ export const orderAPI = {
 
 export const getCategories = async () => {
   try {
-    const response = await apiClient.get('categories/');
+    const response = await apiClient.get(`categories/?t=${new Date().getTime()}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -96,19 +87,19 @@ export const getCategories = async () => {
 };
 
 export const combinationAPI = {
-  list: () => apiClient.get('combinations/'),
+  list: () => apiClient.get(`combinations/?t=${new Date().getTime()}`),
 };
 
 export const bestSellerAPI = {
-  list: () => apiClient.get('home/bestsellers/'),
+  list: () => apiClient.get(`home/bestsellers/?t=${new Date().getTime()}`),
 };
 
 export const newArrivalAPI = {
-  list: () => apiClient.get('home/new-arrivals/'),
+  list: () => apiClient.get(`home/new-arrivals/?t=${new Date().getTime()}`),
 };
 
 export const businessBannerAPI = {
-  get: () => apiClient.get('business-banner/'),
+  get: () => apiClient.get(`business-banner/?t=${new Date().getTime()}`),
 };
 
 export const bulkOrderAPI = {
