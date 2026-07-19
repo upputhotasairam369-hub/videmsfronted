@@ -72,7 +72,7 @@ const Footer = () => {
               <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://www.instagram.com/videms_gallery?igsh=MTFjNGN5MzVpZjNkdQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-colors">
+              <a href="https://www.instagram.com/videmsfurnituree/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
               <a href="https://wa.me/919676781007" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-colors">
@@ -135,7 +135,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm">© 2026 Videm's Gallery . All rights reserved.</p>
+          <p className="text-sm">© 2026 Videm's Furniture . All rights reserved.</p>
         </div>
       </div>
     </footer>

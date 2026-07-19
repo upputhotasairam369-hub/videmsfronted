@@ -58,7 +58,7 @@ const WishlistPage = () => {
     if (validWishlistItems.length === 0) {
         return (
             <div className="bg-gray-50 min-h-[70vh] flex flex-col items-center justify-center px-4 py-16">
-                <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100 text-center max-w-lg w-full">
+                <div className="bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100 text-center max-w-lg w-full">
                     <div className="w-20 h-20 md:w-24 md:h-24 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Heart size={36} className="text-red-500" />
                     </div>

@@ -24,7 +24,7 @@ const HeroCarousel = () => {
           // Fallback if you haven't added any banners in the Django Admin yet!
           setSlides([{
             id: 'fallback',
-            title: 'Welcome to Videm\'s Gallery',
+            title: 'Welcome to Videm\'s Furniture',
             subtitle: 'Discover our exclusive collection of hand-crafted pieces.',
             tag: 'New Collection',
             image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
@@ -93,7 +93,28 @@ const HeroCarousel = () => {
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === current ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          role="button"
+          tabIndex={0}
+          aria-label={`Navigate to ${slide.title}`}
+          onClick={() => {
+            const dest = slide.link_url || '/products';
+            if (dest.startsWith('http')) window.location.href = dest;
+            else navigate(dest);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              const dest = slide.link_url || '/products';
+              if (dest.startsWith('http')) window.location.href = dest;
+              else navigate(dest);
+            }
+          }}
+          onMouseEnter={() => {
+            if (slide.link_url === '/products' || !slide.link_url) {
+              dispatch(fetchProducts({ page: 1, limit: 20 }));
+            }
+          }}
+          className={`group absolute inset-0 cursor-pointer overflow-hidden transition-opacity duration-700 ease-in-out ${index === current ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
         >
           <img
@@ -103,7 +124,7 @@ const HeroCarousel = () => {
             // If you want NO zooming at all (but you will get empty space on the sides), 
             // you can change object-cover to object-contain. 
             // But object-cover object-center is usually best for Hero banners!
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center transition-transform duration-[2000ms] ease-out group-hover:scale-105"
             loading={index === 0 ? 'eager' : 'lazy'}
           />
 
@@ -112,25 +133,14 @@ const HeroCarousel = () => {
             <span className="inline-block px-3 py-1 bg-[#f97316] text-white text-xs font-bold uppercase tracking-wider rounded-sm mb-4">
               {slide.tag || 'Featured'}
             </span>
-            <h2 className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight">
+            <h2 className="text-white text-2xl md:text-fluid-h1 font-black mb-3 md:mb-4 leading-tight drop-shadow-lg">
               {slide.title}
             </h2>
             {slide.subtitle && (
-              <p className="text-gray-200 text-sm md:text-lg mb-8 max-w-md">
+              <p className="text-gray-200 text-sm md:text-fluid-base mb-4 md:mb-8 max-w-md drop-shadow-md">
                 {slide.subtitle}
               </p>
             )}
-            <button
-              onMouseEnter={() => {
-                if (slide.link_url === '/products' || !slide.link_url) {
-                  dispatch(fetchProducts({ page: 1, limit: 20 }));
-                }
-              }}
-              onClick={() => navigate(slide.link_url || '/products')}
-              className="bg-[#f97316] text-white px-8 py-3.5 rounded-md font-bold text-sm md:text-base hover:bg-orange-600 transition active:scale-95 shadow-md outline-none border-none"
-            >
-              Shop The Collection
-            </button>
           </div>
         </div>
       ))}

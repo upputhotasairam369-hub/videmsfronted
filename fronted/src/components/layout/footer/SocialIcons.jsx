@@ -4,7 +4,7 @@ import { Facebook, Instagram, MessageCircle } from 'lucide-react';
 const SocialIcons = () => {
   const icons = [
     { name: 'Facebook', Icon: Facebook, href: '#', hoverClass: 'hover:bg-[#1877F2]' },
-    { name: 'Instagram', Icon: Instagram, href: 'https://www.instagram.com/videms_gallery', hoverClass: 'hover:bg-[#E4405F]' },
+    { name: 'Instagram', Icon: Instagram, href: 'https://www.instagram.com/videmsfurnituree/', hoverClass: 'hover:bg-[#E4405F]' },
     { name: 'WhatsApp', Icon: MessageCircle, href: 'https://wa.me/919676781007', hoverClass: 'hover:bg-[#25D366]' },
   ];
 

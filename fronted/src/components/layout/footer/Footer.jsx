@@ -33,8 +33,8 @@ const Footer = () => {
           <div className="flex flex-col">
             <Link to="/" className="mb-6 inline-block">
               <h1 className="text-[14px] xs:text-[16px] md:text-[20px] lg:text-[24px] font-black tracking-tight text-[#FFFFFF] flex items-center gap-2">
-                <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Videm's Gallery" className="h-10 w-10 object-cover rounded-md" />
-                Videm's <span className="text-[#f97316]">Gallery</span>
+                <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Videm's Furniture" className="h-10 w-10 object-cover rounded-md" />
+                Videm's <span className="text-[#f97316]">Furniture</span>
               </h1>
             </Link>
             <p className="text-[#C8D0D8] text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] leading-relaxed mb-6 xs:mb-8 font-light">
@@ -55,8 +55,8 @@ const Footer = () => {
             <div className="space-y-3 xs:space-y-4 text-[#C8D0D8] text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">
               <p className="flex flex-col">
                 <span className="text-xs text-[#C8D0D8] opacity-80 uppercase tracking-wider font-semibold mb-1">Email Support</span>
-                <a href="mailto:videmsgallery@gmail.com" className="hover:text-[#F97316] transition-colors duration-300">
-                  videmsgallery@gmail.com
+                <a href="mailto:videmsfurniture@gmail.com" className="hover:text-[#F97316] transition-colors duration-300">
+                  videmsfurniture@gmail.com
                 </a>
               </p>
               <p className="flex flex-col">
@@ -84,7 +84,7 @@ const Footer = () => {
       <div className="border-t border-[#1E272E] bg-[#1E272E]">
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12 lg:px-24 py-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[#C8D0D8] text-[12px] xs:text-[13px] md:text-[14px] text-center w-full md:w-auto order-2 md:order-1 mt-4 md:mt-0">
-            © 2026 Videms Gallery. All Rights Reserved.
+            © 2026 Videms Furniture. All Rights Reserved.
           </p>
           <div className="flex flex-wrap justify-center gap-3 xs:gap-4 md:gap-8 text-[12px] xs:text-[13px] md:text-[14px] text-[#C8D0D8] order-1 md:order-2 w-full md:w-auto">
             <Link to="/privacy-policy" className="hover:text-[#F97316] transition-colors duration-300">Privacy Policy</Link>

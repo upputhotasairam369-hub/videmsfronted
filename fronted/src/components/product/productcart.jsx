@@ -170,16 +170,16 @@ const ProductCard = memo(({ product }) => {
           </button>
         </div>
 
-        <div className="p-5 flex flex-col flex-grow">
+        <div className="p-3 md:p-5 flex flex-col flex-grow">
           <Link to={`/product/${slug}`} className="block outline-none focus:outline-none border-none select-none" style={{ WebkitTapHighlightColor: 'transparent' }}>
-            <h3 className="text-[17px] font-bold text-gray-900 group-hover:text-[#f97316] transition-colors duration-200 truncate">
+            <h3 className="text-fluid-base font-bold text-gray-900 group-hover:text-[#f97316] transition-colors duration-200 truncate">
               {name}
             </h3>
           </Link>
-          <p className="text-sm text-gray-500 mt-1 mb-4">{finish}</p>
+          <p className="text-fluid-sm text-gray-500 mt-1 mb-4">{finish}</p>
 
           <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-xl font-bold text-gray-900">₹{safePrice.toLocaleString('en-IN')}</span>
+            <span className="text-fluid-lg font-bold text-gray-900">₹{safePrice.toLocaleString('en-IN')}</span>
             {safeMrp > safePrice && (
               <span className="text-sm font-medium text-gray-400 line-through">₹{safeMrp.toLocaleString('en-IN')}</span>
             )}
@@ -200,7 +200,7 @@ const ProductCard = memo(({ product }) => {
           <button
             onClick={inCart ? (e) => { e.preventDefault(); navigate('/cart'); } : handleAddToCart}
             disabled={isOutOfStock && !inCart}
-            className={`w-full py-2.5 rounded-lg flex items-center justify-center gap-2 font-bold text-sm transition-all duration-300 select-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none ${inCart
+            className={`w-full py-2.5 min-h-[44px] rounded-lg flex items-center justify-center gap-2 font-bold text-fluid-sm transition-all duration-300 select-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none ${inCart
               ? 'bg-[#10b981] text-white shadow-[0_4px_14px_rgba(16,185,129,0.3)] hover:bg-[#059669] border border-transparent'
               : isOutOfStock
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'

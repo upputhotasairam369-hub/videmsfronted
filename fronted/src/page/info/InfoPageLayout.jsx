@@ -25,8 +25,8 @@ const InfoPageLayout = ({ title, subtitle, children }) => {
       </div>
 
       {/* Content Section */}
-      <div className="flex-grow container mx-auto px-6 md:px-12 py-16 md:py-24 max-w-4xl">
-        <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100 prose prose-gray max-w-none">
+      <div className="flex-grow container mx-auto px-4 md:px-12 py-8 md:py-24 max-w-4xl">
+        <div className="bg-white p-4 md:p-8 lg:p-12 rounded-2xl shadow-sm border border-gray-100 prose prose-gray max-w-none">
           {children}
         </div>
       </div>

@@ -429,7 +429,7 @@ const CheckoutPage = () => {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_YOUR_TEST_KEY_HERE",
         amount: totalPayable * 100,
         currency: "INR",
-        name: "Videm's Gallery",
+        name: "Videm's Furniture",
         description: "Premium Furniture Purchase",
         order_id: razorpayOrderId, // Link the Django order to Razorpay
         theme: { color: "#e87831" },

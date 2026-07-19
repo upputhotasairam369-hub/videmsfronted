@@ -60,7 +60,7 @@ const ProductPage = () => {
   const handleShare = async () => {
     const shareData = {
       title: currentProduct.name,
-      text: `Check out this ${currentProduct.name} at Videm's Gallery!`,
+      text: `Check out this ${currentProduct.name} at Videm's Furniture!`,
       url: window.location.href,
     };
 

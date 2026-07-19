@@ -26,6 +26,14 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
+      fontSize: {
+        'fluid-xs': 'clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)',
+        'fluid-sm': 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+        'fluid-base': 'clamp(1rem, 0.95rem + 0.25vw, 1.125rem)',
+        'fluid-lg': 'clamp(1.125rem, 1rem + 0.625vw, 1.5rem)',
+        'fluid-xl': 'clamp(1.25rem, 1rem + 1.25vw, 2rem)',
+        'fluid-h1': 'clamp(1.75rem, 1.25rem + 2.5vw, 3.5rem)',
+      },
       screens: {
         xs: '475px',
       },

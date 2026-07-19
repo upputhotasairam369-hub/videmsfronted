@@ -49,7 +49,7 @@ const LoginPage = () => {
   if (isAuthenticated && (!user?.first_name || !user?.email)) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 py-12 px-4">
-        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100 animate-fade-in-up">
+        <div className="max-w-md w-full space-y-8 bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100 animate-fade-in-up">
           <div className="text-center">
             <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4 text-[#f97316]">
               <User size={32} />
@@ -117,7 +117,7 @@ const LoginPage = () => {
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 py-12 px-4">
-        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        <div className="max-w-md w-full space-y-8 bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900">Log in</h2>
             <p className="mt-2 text-sm text-gray-600">Continue with Google to securely access your account</p>

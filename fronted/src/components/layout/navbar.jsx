@@ -78,7 +78,7 @@ const Navbar = () => {
             </button>
             <Link to="/" className="flex items-center gap-2 outline-none focus:outline-none focus:ring-0 border-none select-none" style={{ WebkitTapHighlightColor: 'transparent' }}>
               <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Logo" className="h-7 w-7 md:h-8 md:w-8 object-cover rounded-md hidden sm:block" />
-              <h1 className="text-lg md:text-xl font-black tracking-tight text-gray-900">Videm's <span className="text-[#f97316]">Gallery</span></h1>
+              <h1 className="text-lg md:text-xl font-black tracking-tight text-gray-900">Videm's <span className="text-[#f97316]">Furniture</span></h1>
             </Link>
           </div>
           <div className="hidden md:flex items-center justify-center flex-1 max-w-lg mx-8 h-8">
@@ -119,10 +119,10 @@ const Navbar = () => {
             className="group z-10 flex items-center gap-2 md:gap-3 lg:gap-3 outline-none focus:outline-none focus:ring-0 border-none select-none"
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
-            <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Videm's Gallery Logo" className="h-8 w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 object-cover rounded-md" />
+            <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Videm's Furniture Logo" className="h-8 w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 object-cover rounded-md" />
             <h1 className="text-xl md:text-xl lg:text-2xl font-bold tracking-tight whitespace-nowrap">
               <span className="text-gray-900 group-hover:text-[#f97316] transition-colors duration-300">Videm's</span>{' '}
-              <span className="text-[#f97316] group-hover:text-gray-900 transition-colors duration-300">Gallery</span>
+              <span className="text-[#f97316] group-hover:text-gray-900 transition-colors duration-300">Furniture</span>
             </h1>
           </Link>
 
