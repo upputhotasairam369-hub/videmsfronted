@@ -9,6 +9,11 @@ const WishlistPage = () => {
     const { items: rawWishlistItems = [], removeItem, clearWishlist } = useWishlist() || {};
     const { addItem, items: cartItems = [] } = useCart();
 
+    // Scroll to top on mount
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const validWishlistItems = Array.isArray(rawWishlistItems)
         ? rawWishlistItems.filter(item => item && item.productId && String(item.productId) !== 'undefined')
         : [];

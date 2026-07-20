@@ -1,4 +1,5 @@
 import React, { useState, memo } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { Heart, ShoppingCart, CheckCircle2, Clock, Check } from 'lucide-react';
 import { useCart } from '../../hooks/usecart';
@@ -17,7 +18,7 @@ const ProductCard = memo(({ product }) => {
 
   const showPopup = (message, actionText, link) => {
     setPopup({ show: true, message, actionText, link });
-    setTimeout(() => setPopup({ show: false, message: '', actionText: '', link: '' }), 1500);
+    setTimeout(() => setPopup({ show: false, message: '', actionText: '', link: '' }), 2500);
   };
 
   const _id = product?._id || product?.id || product?.productId || Math.random().toString();
@@ -139,21 +140,21 @@ const ProductCard = memo(({ product }) => {
 
           <button
             onClick={handleWishlistToggle}
-            className={`absolute top-3 right-3 w-[34px] h-[34px] flex items-center justify-center rounded-full
-              backdrop-blur-sm
+            className={`absolute top-3 right-3 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full
+              backdrop-blur-md
               hover:scale-110 active:scale-95
               transition-all duration-300
               appearance-none !outline-none focus:!outline-none focus-visible:!outline-none
               !ring-0 !ring-offset-0 !border-0 select-none z-10
               ${isInWishlist
-                ? 'bg-white/60 opacity-100'
-                : 'bg-white/40 opacity-0 group-hover:opacity-100'
+                ? 'bg-white/90 opacity-100'
+                : 'bg-white/70 opacity-100 hover:bg-white/90'
               }`}
             style={{
               WebkitTapHighlightColor: 'transparent',
               boxShadow: isInWishlist
                 ? '0 4px 16px rgba(239,68,68,0.35), 0 2px 6px rgba(0,0,0,0.15)'
-                : '0 4px 14px rgba(0,0,0,0.20), 0 2px 5px rgba(0,0,0,0.12)',
+                : '0 4px 14px rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.1)',
               border: 'none',
               outline: 'none',
             }}
@@ -170,29 +171,29 @@ const ProductCard = memo(({ product }) => {
           </button>
         </div>
 
-        <div className="p-3 md:p-5 flex flex-col flex-grow">
+        <div className="p-2 md:p-3 flex flex-col flex-grow">
           <Link to={`/product/${slug}`} className="block outline-none focus:outline-none border-none select-none" style={{ WebkitTapHighlightColor: 'transparent' }}>
             <h3 className="text-fluid-base font-bold text-gray-900 group-hover:text-[#f97316] transition-colors duration-200 truncate">
               {name}
             </h3>
           </Link>
-          <p className="text-fluid-sm text-gray-500 mt-1 mb-4">{finish}</p>
+          <p className="text-fluid-sm text-gray-500 mt-0.5 mb-2 truncate">{finish}</p>
 
-          <div className="flex items-baseline gap-2 mb-3">
+          <div className="flex items-baseline gap-2 mb-2">
             <span className="text-fluid-lg font-bold text-gray-900">₹{safePrice.toLocaleString('en-IN')}</span>
             {safeMrp > safePrice && (
               <span className="text-sm font-medium text-gray-400 line-through">₹{safeMrp.toLocaleString('en-IN')}</span>
             )}
           </div>
 
-          <div className="mb-5 mt-auto">
+          <div className="mb-3 mt-auto">
             {!isOutOfStock ? (
-              <div className="flex items-center gap-1.5 text-sm font-medium text-[#16a34a] select-none">
-                <CheckCircle2 size={16} /> In Stock
+              <div className="flex items-center gap-1.5 text-[11px] md:text-xs font-medium text-[#16a34a] select-none">
+                <CheckCircle2 size={14} /> In Stock
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 text-sm font-medium text-[#dc2626] select-none">
-                <Clock size={16} /> Out of Stock
+              <div className="flex items-center gap-1.5 text-[11px] md:text-xs font-medium text-[#dc2626] select-none">
+                <Clock size={14} /> Out of Stock
               </div>
             )}
           </div>
@@ -200,7 +201,7 @@ const ProductCard = memo(({ product }) => {
           <button
             onClick={inCart ? (e) => { e.preventDefault(); navigate('/cart'); } : handleAddToCart}
             disabled={isOutOfStock && !inCart}
-            className={`w-full py-2.5 min-h-[44px] rounded-lg flex items-center justify-center gap-2 font-bold text-fluid-sm transition-all duration-300 select-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none ${inCart
+            className={`w-full py-1.5 md:py-2 min-h-8 md:min-h-9 rounded-md flex items-center justify-center gap-2 font-semibold text-xs md:text-sm transition-all duration-300 select-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none ${inCart
               ? 'bg-[#10b981] text-white shadow-[0_4px_14px_rgba(16,185,129,0.3)] hover:bg-[#059669] border border-transparent'
               : isOutOfStock
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
@@ -213,10 +214,10 @@ const ProductCard = memo(({ product }) => {
         </div>
       </div>
 
-      {/* Toast Popup */}
-      {popup.show && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] bg-[#222222] text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-4 min-w-max animate-fade-in-up">
-          <span className="text-[15px] font-medium tracking-wide">
+      {/* Toast Popup rendered via Portal to prevent parent transform bugs */}
+      {popup.show && typeof document !== 'undefined' && createPortal(
+        <div className="fixed bottom-6 left-0 right-0 mx-auto z-[9999] bg-[#222222] text-white px-4 py-2.5 rounded-lg shadow-2xl flex items-center justify-between gap-3 w-max max-w-[90vw] animate-fade-in-up">
+          <span className="text-xs font-medium tracking-wide">
             {popup.message}
           </span>
           <button
@@ -224,7 +225,7 @@ const ProductCard = memo(({ product }) => {
               e.preventDefault();
               navigate(popup.link);
             }}
-            className="px-7 py-2.5 rounded-full text-[15px] font-medium transition-colors duration-200 select-none border-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none bg-[#f97316] text-white hover:bg-[#ea6c0a]"
+            className="px-4 py-1.5 rounded-md text-xs font-medium transition-colors duration-200 select-none border-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none bg-[#f97316] text-white hover:bg-[#ea6c0a]"
             style={{
               WebkitTapHighlightColor: 'transparent',
               outline: 'none',
@@ -233,7 +234,8 @@ const ProductCard = memo(({ product }) => {
           >
             {popup.actionText}
           </button>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

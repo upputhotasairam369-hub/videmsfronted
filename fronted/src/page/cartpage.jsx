@@ -134,13 +134,13 @@ const CartPage = () => {
   return (
     <div className="bg-[#f4f5f7] min-h-screen py-6 md:py-8 font-sans relative overflow-hidden">
       <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none flex justify-center ${toast.show ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95'}`}>
-        <div className="bg-white border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] px-6 py-4 rounded-[20px] flex items-center gap-3.5 w-max max-w-[90vw]">
+        <div className="bg-white border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] px-6 py-4 rounded-2xl flex items-center gap-3.5 w-max max-w-[90%] md:max-w-sm mx-4">
           {toast.type === 'heart' ? (
             <Heart size={22} className="text-[#f97316] fill-[#f97316] shrink-0" strokeWidth={2.5} />
           ) : (
             <Info size={22} className="text-[#ef4444] shrink-0" strokeWidth={2} />
           )}
-          <span className="text-[15px] font-medium text-gray-800 tracking-tight">{toast.message}</span>
+          <span className="text-sm font-medium text-gray-800 tracking-tight">{toast.message}</span>
         </div>
       </div>
 
@@ -230,7 +230,7 @@ const CartPage = () => {
                             </div>
 
                             <div className="flex flex-col">
-                              {discountPercent > 0 && <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide text-[#22c55e] mb-0.5">Limited-Time Deal</span>}
+                              {discountPercent > 0 && <span className="text-xs md:text-sm font-semibold tracking-wide text-[#22c55e] mb-0.5">Limited-Time Deal</span>}
                               <div className="flex items-baseline gap-2">
                                 <span className="text-lg font-bold text-gray-900">₹{(price * qty).toLocaleString('en-IN')}</span>
                                 {mrp > price && <span className="text-xs sm:text-sm text-gray-400 line-through font-medium">₹{(mrp * qty).toLocaleString('en-IN')}</span>}
@@ -241,11 +241,11 @@ const CartPage = () => {
                         </div>
 
                         <div className="flex items-center justify-between sm:justify-start gap-4 mt-6 pt-5 border-t border-gray-100 sm:border-0 sm:pt-0 sm:mt-auto">
-                          <button onClick={() => handleSaveForLater(item)} className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-[14px] font-medium transition-colors duration-200 select-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none active:scale-[0.98] bg-transparent text-gray-800 border-none hover:bg-gray-50" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>
+                          <button onClick={() => handleSaveForLater(item)} className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 select-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none active:scale-[0.98] bg-transparent text-gray-800 border-none hover:bg-gray-50" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>
                             <Heart size={16} className="text-gray-400" />
                             <span className="whitespace-nowrap">Save for Later</span>
                           </button>
-                          <button onClick={() => removeItem(item.productId, item.variantId)} className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-[14px] font-medium text-red-500 bg-red-50 border-none hover:bg-red-100 transition-all duration-200 active:scale-[0.98] select-none !outline-none focus:!outline-none focus-visible:!outline-none !ring-0 !ring-offset-0 focus:!ring-0 !shadow-none" title="Remove from Cart" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>
+                          <button onClick={() => removeItem(item.productId, item.variantId)} className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-red-500 bg-red-50 border-none hover:bg-red-100 transition-all duration-200 active:scale-[0.98] select-none !outline-none focus:!outline-none focus-visible:!outline-none !ring-0 !ring-offset-0 focus:!ring-0 !shadow-none" title="Remove from Cart" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>
                             <Trash2 size={16} />
                             <span className="whitespace-nowrap">Remove</span>
                           </button>
@@ -272,9 +272,9 @@ const CartPage = () => {
                   <div className="flex items-start justify-between bg-green-50/50 p-3 md:p-4 rounded-xl border border-green-100 mt-2 transition-all duration-500 ease-in-out">
                     <div className="flex flex-col">
                       <span className="text-xs md:text-sm text-gray-800 font-medium">Coupon Applied: <span className="font-bold">{couponCode}</span></span>
-                      <span className="text-[11px] md:text-xs text-[#22c55e] font-medium mt-0.5">You have saved ₹{couponDiscount.toLocaleString('en-IN')}</span>
+                      <span className="text-xs text-[#22c55e] font-medium mt-0.5">You have saved ₹{couponDiscount.toLocaleString('en-IN')}</span>
                     </div>
-                    <button onClick={() => setIsCouponApplied(false)} className="text-[10px] md:text-xs font-bold text-[#f97316] border border-[#f97316] px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg hover:bg-orange-50 active:bg-orange-100 transition-colors duration-200 select-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none tracking-wide" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>CHANGE</button>
+                    <button onClick={() => setIsCouponApplied(false)} className="text-xs font-bold text-[#f97316] border border-[#f97316] px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg hover:bg-orange-50 active:bg-orange-100 transition-colors duration-200 select-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none tracking-wide" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>CHANGE</button>
                   </div>
                 )}
               </div>
@@ -308,7 +308,7 @@ const CartPage = () => {
             </div>
 
             <div className="mt-2 flex flex-col gap-3 md:gap-4 mb-8 lg:mb-0">
-              <p className="text-[11px] md:text-xs text-gray-500 text-center font-medium">EMI Starting ₹2,085/Month</p>
+              <p className="text-xs text-gray-500 text-center font-medium">EMI Starting ₹2,085/Month</p>
               <button onClick={handleProceedToCheckout} className="w-full bg-[#f97316] text-white py-3.5 md:py-4 rounded-xl font-bold tracking-wide hover:bg-black active:scale-[0.98] transform transition-all duration-300 select-none border-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>PLACE ORDER</button>
             </div>
           </div>

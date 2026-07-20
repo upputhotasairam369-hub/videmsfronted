@@ -21,7 +21,7 @@ const CategoryCard = ({ category }) => {
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
             </div>
 
-            <h3 className="mt-5 text-center text-lg md:text-xl font-medium text-gray-800 transition-colors duration-300 group-hover:text-gray-500">
+            <h3 className="mt-3 md:mt-4 text-center text-[clamp(0.95rem,3vw,1.15rem)] font-medium text-gray-800 transition-colors duration-300 group-hover:text-gray-500">
                 {category.name}
             </h3>
         </Link>

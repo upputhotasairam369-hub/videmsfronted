@@ -32,12 +32,12 @@ const Footer = () => {
           {/* Section 1: Company Info */}
           <div className="flex flex-col">
             <Link to="/" className="mb-6 inline-block">
-              <h1 className="text-[14px] xs:text-[16px] md:text-[20px] lg:text-[24px] font-black tracking-tight text-[#FFFFFF] flex items-center gap-2">
+              <h1 className="text-fluid-base lg:text-fluid-lg font-black tracking-tight text-[#FFFFFF] flex items-center gap-2">
                 <img src="https://i.postimg.cc/q7hqkqwB/568094498-17843891301597329-6427631544708793099-n.jpg" alt="Videm's Furniture" className="h-10 w-10 object-cover rounded-md" />
                 Videm's <span className="text-[#f97316]">Furniture</span>
               </h1>
             </Link>
-            <p className="text-[#C8D0D8] text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] leading-relaxed mb-6 xs:mb-8 font-light">
+            <p className="text-[#C8D0D8] text-fluid-sm leading-relaxed mb-6 xs:mb-8 font-light">
               India's trusted destination for stylish & affordable furniture. Elevating living spaces with premium craftsmanship.
             </p>
             <SocialIcons />
@@ -51,8 +51,8 @@ const Footer = () => {
 
           {/* Section 4: Contact Us */}
           <div className="flex flex-col">
-            <h4 className="text-[#FFFFFF] font-bold text-[14px] xs:text-[16px] md:text-[20px] lg:text-[24px] mb-4 xs:mb-6 tracking-wide uppercase">Contact Us</h4>
-            <div className="space-y-3 xs:space-y-4 text-[#C8D0D8] text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">
+            <h4 className="text-[#FFFFFF] font-bold text-fluid-base lg:text-fluid-lg mb-4 xs:mb-6 tracking-wide uppercase">Contact Us</h4>
+            <div className="space-y-3 xs:space-y-4 text-[#C8D0D8] text-fluid-sm font-light">
               <p className="flex flex-col">
                 <span className="text-xs text-[#C8D0D8] opacity-80 uppercase tracking-wider font-semibold mb-1">Email Support</span>
                 <a href="mailto:videmsfurniture@gmail.com" className="hover:text-[#F97316] transition-colors duration-300">
@@ -70,7 +70,7 @@ const Footer = () => {
                 <span>10:00 AM – 6:00 PM</span>
               </p>
               <div className="pt-4">
-                <Link to="/store-locator" className="block w-full sm:w-auto text-center border border-gray-600 hover:border-[#F97316] hover:text-[#F97316] text-[#FFFFFF] px-4 xs:px-6 py-3 md:py-2.5 rounded-full transition-all duration-300 text-[12px] xs:text-[13px] md:text-[14px] tracking-wide bg-transparent">
+                <Link to="/store-locator" className="block w-full sm:w-auto text-center border border-gray-600 hover:border-[#F97316] hover:text-[#F97316] text-[#FFFFFF] px-4 xs:px-6 py-3 md:py-2.5 rounded-full transition-all duration-300 text-fluid-sm tracking-wide bg-transparent">
                   Store Locator
                 </Link>
               </div>
@@ -83,10 +83,10 @@ const Footer = () => {
       {/* Section 6: Footer Bottom */}
       <div className="border-t border-[#1E272E] bg-[#1E272E]">
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12 lg:px-24 py-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[#C8D0D8] text-[12px] xs:text-[13px] md:text-[14px] text-center w-full md:w-auto order-2 md:order-1 mt-4 md:mt-0">
+          <p className="text-[#C8D0D8] text-fluid-sm text-center w-full md:w-auto order-2 md:order-1 mt-4 md:mt-0">
             © 2026 Videms Furniture. All Rights Reserved.
           </p>
-          <div className="flex flex-wrap justify-center gap-3 xs:gap-4 md:gap-8 text-[12px] xs:text-[13px] md:text-[14px] text-[#C8D0D8] order-1 md:order-2 w-full md:w-auto">
+          <div className="flex flex-wrap justify-center gap-3 xs:gap-4 md:gap-8 text-fluid-sm text-[#C8D0D8] order-1 md:order-2 w-full md:w-auto">
             <Link to="/privacy-policy" className="hover:text-[#F97316] transition-colors duration-300">Privacy Policy</Link>
             <Link to="/refund-policy" className="hover:text-[#F97316] transition-colors duration-300">Refund Policy</Link>
             <Link to="/shipping-policy" className="hover:text-[#F97316] transition-colors duration-300">Shipping Policy</Link>

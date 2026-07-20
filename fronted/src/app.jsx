@@ -1,6 +1,6 @@
 // src/app.jsx
 import React, { useEffect, Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { fetchCurrentUser } from './store/slices/authslice';
 import Navbar from './components/layout/navbar';
@@ -32,6 +32,16 @@ const RefundPolicy = lazy(() => import('./page/info/RefundPolicy'));
 const ShippingPolicy = lazy(() => import('./page/info/ShippingPolicy'));
 const StoreLocator = lazy(() => import('./page/info/StoreLocator'));
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const App = () => {
   const dispatch = useDispatch();
 
@@ -45,6 +55,7 @@ const App = () => {
   return (
     <ErrorBoundary>
       <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+        <ScrollToTop />
         <Navbar />
         <main className="flex-grow">
           <Suspense fallback={

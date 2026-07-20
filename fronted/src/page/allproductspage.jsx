@@ -24,7 +24,7 @@ const SIDEBAR_CATEGORIES = {
 // ── Reusable style helpers ─────────────────────────────────────────────────────
 // 🚀 USING YOUR EXACT OVERRIDES: border-none, !shadow-none, !outline-none
 const pillBase =
-    'w-full text-left px-5 py-3.5 rounded-xl transition-colors duration-200 font-medium text-[15px] ' +
+    'w-full text-left px-5 py-3.5 rounded-xl transition-colors duration-200 font-medium text-sm ' +
     'select-none border-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none cursor-pointer';
 
 const pillActive = 'bg-[#fff7ed] text-[#f97316]';
@@ -49,7 +49,7 @@ const flatInlineStyles = {
 const ProductSkeletonGrid = () => (
     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8 w-full">
         {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl shadow-[0_1px_6px_rgba(0,0,0,0.06)] border border-gray-100 p-4 h-[350px] flex flex-col">
+            <div key={i} className="bg-white rounded-2xl shadow-[0_1px_6px_rgba(0,0,0,0.06)] border border-gray-100 p-4 h-full min-h-[20rem] flex flex-col">
                 <div className="bg-gray-200 h-48 rounded-xl mb-4 w-full animate-pulse"></div>
                 <div className="bg-gray-200 h-4 rounded w-3/4 mb-2 animate-pulse"></div>
                 <div className="bg-gray-200 h-4 rounded w-1/2 mb-4 animate-pulse"></div>
@@ -85,6 +85,7 @@ const AllProductsPage = () => {
 
     // ── Sync state when URL params change ──
     useEffect(() => {
+        window.scrollTo(0, 0); // Reset scroll position when navigating to this page
         const cat = searchParams.get('category') || 'all';
         const sub = searchParams.get('subcategory') || '';
         const search = searchParams.get('search') || '';
@@ -209,7 +210,7 @@ const AllProductsPage = () => {
 
             {/* ── Categories card ── */}
             <div className="bg-white rounded-2xl shadow-[0_1px_6px_rgba(0,0,0,0.06)] p-5 border border-gray-100">
-                <h3 className="text-[13px] font-bold text-gray-400 uppercase tracking-widest mb-4 px-1 select-none">
+                <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 px-1 select-none">
                     Categories
                 </h3>
                 <div className="space-y-2">
@@ -254,7 +255,7 @@ const AllProductsPage = () => {
                                     <div className="pl-2 pr-2 space-y-4 py-3 border-l-2 border-orange-100 ml-5 my-1.5">
                                         {Object.entries(SIDEBAR_CATEGORIES[mainCat]).map(([groupName, groupItems]) => (
                                             <div key={groupName}>
-                                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 select-none px-3">
+                                                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 select-none px-3">
                                                     {groupName}
                                                 </h4>
                                                 <ul className="space-y-1">
@@ -286,7 +287,7 @@ const AllProductsPage = () => {
 
             {/* ── Sort By card ── */}
             <div className="bg-white rounded-2xl shadow-[0_1px_6px_rgba(0,0,0,0.06)] p-5 border border-gray-100">
-                <h3 className="text-[13px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-1 select-none">
+                <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1 select-none">
                     Sort By
                 </h3>
                 <div className="relative">
@@ -367,7 +368,7 @@ const AllProductsPage = () => {
 
                     {/* ── Sidebar / Drawer ── */}
                     <div className={`
-                        fixed inset-y-0 left-0 z-50 w-[85%] max-w-[340px] bg-gray-50 md:bg-transparent shadow-2xl
+                        fixed inset-y-0 left-0 z-50 w-[85vw] max-w-sm md:w-80 bg-gray-50 md:bg-transparent shadow-2xl
                         flex flex-col transform transition-transform duration-300 ease-in-out
                         md:static md:z-auto md:w-auto md:max-w-none 
                         md:shadow-none md:transform-none md:translate-x-0 md:block

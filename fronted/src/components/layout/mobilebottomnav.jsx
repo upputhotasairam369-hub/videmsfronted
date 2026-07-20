@@ -18,7 +18,7 @@ const MobileBottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 md:hidden safe-area-pb">
-      <div className="flex justify-around items-center h-14">
+      <div className="flex justify-around items-center h-12">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
@@ -29,18 +29,18 @@ const MobileBottomNav = () => {
             >
               <div className="relative">
                 <item.icon
-                  className={`w-5 h-5 ${isActive ? 'text-primary-700' : 'text-gray-500'
+                  className={`w-[1.15em] h-[1.15em] ${isActive ? 'text-primary-700' : 'text-gray-500'
                     }`}
                   strokeWidth={isActive ? 2.5 : 2}
                 />
                 {item.badge > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#dc2626] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-[#dc2626] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center scale-75 origin-center">
                     {item.badge}
                   </span>
                 )}
               </div>
               <span
-                className={`text-[10px] mt-0.5 ${isActive ? 'text-primary-700 font-medium' : 'text-gray-500'
+                className={`text-xs mt-0.5 ${isActive ? 'text-primary-700 font-medium' : 'text-gray-500'
                   }`}
               >
                 {item.label}

@@ -51,22 +51,23 @@ const CategorySection = () => {
     }, []);
 
     return (
-        <section className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 lg:py-16">
-            <div className="flex flex-col items-center text-center mb-8 md:mb-12">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">
-                    Shop by Category
-                </h2>
-                <p className="mt-3 md:mt-4 text-base md:text-lg text-gray-500 max-w-2xl mx-auto">
-                    Explore our premium collections crafted for your home
-                </p>
-            </div>
+        <section className="w-full bg-[#FAF9F6]">
+            <div className="max-w-screen-2xl mx-auto px-3 md:px-8 lg:px-12 py-6 md:py-10 lg:py-12">
+                <div className="flex flex-col items-center text-center mb-5 md:mb-8">
+                    <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold text-gray-900 tracking-tight">
+                        Shop by Category
+                    </h2>
+                    <p className="mt-2 md:mt-3 text-[clamp(0.875rem,2vw,1.125rem)] text-gray-500 max-w-2xl mx-auto">
+                        Explore our premium collections crafted for your home
+                    </p>
+                </div>
 
             {error ? (
-                <div className="text-center py-12 text-base md:text-lg text-gray-500 font-medium bg-gray-50 rounded-lg mx-4 md:mx-0">
+                <div className="text-center py-10 text-[clamp(0.875rem,2vw,1.125rem)] text-gray-500 font-medium bg-white rounded-lg mx-3 md:mx-0 shadow-sm border border-gray-100">
                     {error}
                 </div>
             ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 w-full">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 lg:gap-6 w-full">
                     {/* 
                        MOBILE (Default): grid-cols-2 creates a 2x2 grid.
                        DESKTOP (md:): md:grid-cols-4 forces a single 4-column row.
@@ -81,12 +82,13 @@ const CategorySection = () => {
                             <CategoryCard key={category.id} category={category} />
                         ))
                     ) : (
-                        <div className="col-span-2 md:col-span-4 text-center py-12 text-base md:text-lg text-gray-500">
+                        <div className="col-span-2 md:col-span-4 text-center py-10 text-[clamp(0.875rem,2vw,1.125rem)] text-gray-500 bg-white rounded-lg shadow-sm border border-gray-100">
                             No categories available at the moment.
                         </div>
                     )}
                 </div>
             )}
+            </div>
         </section>
     );
 };

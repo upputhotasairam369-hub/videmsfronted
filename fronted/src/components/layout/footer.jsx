@@ -25,9 +25,9 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
       {/* Trust Badges */}
-      <div className="bg-primary-800 py-6">
+      <div className="bg-primary-800 py-4 md:py-6">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <div className="flex items-center justify-center text-white">
               <Truck className="w-6 h-6 mr-2" />
               <div className="text-sm">
@@ -60,12 +60,12 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <div className="container mx-auto px-4 py-4 md:py-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12">
           {/* About Us */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-lg tracking-wide uppercase">About Us</h4>
-            <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+            <h4 className="text-white font-bold mb-3 md:mb-6 text-lg tracking-wide uppercase">About Us</h4>
+            <p className="text-sm text-gray-400 mb-3 md:mb-6 leading-relaxed">
               We design and craft premium wooden furniture to elevate your living spaces. Experience comfort, style, and durability in every piece.
             </p>
             <div className="flex space-x-4 mb-4">
@@ -84,13 +84,13 @@ const Footer = () => {
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
-            <p className="text-sm text-gray-400 mt-6"><span className="text-white font-medium">Contact:</span> +91 96767 81007</p>
+            <p className="text-sm text-gray-400 mt-4 md:mt-6"><span className="text-white font-medium">Contact:</span> +91 96767 81007</p>
           </div>
 
           {/* Customer Service */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-lg tracking-wide uppercase">Customer Service</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h4 className="text-white font-bold mb-3 md:mb-6 text-lg tracking-wide uppercase">Customer Service</h4>
+            <ul className="space-y-2 md:space-y-3 text-sm text-gray-400">
               <li><Link to="/track-order" className="hover:text-brand-orange transition">Track Order</Link></li>
               <li><Link to="/returns" className="hover:text-brand-orange transition">Returns & Exchange</Link></li>
               <li><Link to="/warranty" className="hover:text-brand-orange transition">Warranty Policy</Link></li>
@@ -102,8 +102,8 @@ const Footer = () => {
 
           {/* Top Categories */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-lg tracking-wide uppercase">Top Categories</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h4 className="text-white font-bold mb-3 md:mb-6 text-lg tracking-wide uppercase">Top Categories</h4>
+            <ul className="space-y-2 md:space-y-3 text-sm text-gray-400">
               <li><Link to="/category/sofas" className="hover:text-brand-orange transition">Sofas</Link></li>
               <li><Link to="/category/beds" className="hover:text-brand-orange transition">Beds</Link></li>
               <li><Link to="/category/dining" className="hover:text-brand-orange transition">Dining</Link></li>
@@ -114,11 +114,11 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-lg tracking-wide uppercase">Newsletter</h4>
-            <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+            <h4 className="text-white font-bold mb-3 md:mb-6 text-lg tracking-wide uppercase">Newsletter</h4>
+            <p className="text-sm text-gray-400 mb-3 md:mb-6 leading-relaxed">
               Subscribe to our newsletter and get exclusive offers and updates directly to your inbox.
             </p>
-            <form className="flex flex-col space-y-3">
+            <form className="flex flex-col space-y-2 md:space-y-3">
               <input
                 type="email"
                 placeholder="Enter your email address"
@@ -134,7 +134,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 mt-6 pt-4 md:mt-8 md:pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm">© 2026 Videm's Furniture . All rights reserved.</p>
         </div>
       </div>

@@ -78,7 +78,7 @@ const HeroCarousel = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-100">
+      <div className="w-full h-[35vh] sm:h-[40vh] md:h-[45vh] lg:h-[60vh] xl:h-[65vh] flex items-center justify-center bg-gray-100 border-b border-gray-200">
         <Loader2 className="animate-spin text-[#f97316] w-8 h-8" />
       </div>
     );
@@ -86,7 +86,7 @@ const HeroCarousel = () => {
 
   return (
     <div
-      className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-gray-100"
+      className="relative w-full h-[35vh] sm:h-[40vh] md:h-[45vh] lg:h-[60vh] xl:h-[65vh] overflow-hidden bg-gray-100 border-b border-gray-200 shadow-sm"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -117,17 +117,10 @@ const HeroCarousel = () => {
           className={`group absolute inset-0 cursor-pointer overflow-hidden transition-opacity duration-700 ease-in-out ${index === current ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
         >
-          <img
-            src={getImageUrl(slide.image)}
-            alt={slide.title}
-            // 🚀 Added object-center to keep the focal point in the middle
-            // If you want NO zooming at all (but you will get empty space on the sides), 
-            // you can change object-cover to object-contain. 
-            // But object-cover object-center is usually best for Hero banners!
-            className="w-full h-full object-cover object-center transition-transform duration-[2000ms] ease-out group-hover:scale-105"
-            loading={index === 0 ? 'eager' : 'lazy'}
+          <div
+            className="w-full h-full bg-cover bg-center transition-transform duration-[2000ms] ease-out group-hover:scale-105"
+            style={{ backgroundImage: `url('${getImageUrl(slide.image)}')` }}
           />
-
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
           <div className="absolute bottom-12 left-4 md:bottom-20 md:left-12 lg:left-16 max-w-xl">
             <span className="inline-block px-3 py-1 bg-[#f97316] text-white text-xs font-bold uppercase tracking-wider rounded-sm mb-4">
