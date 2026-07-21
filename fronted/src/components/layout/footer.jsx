@@ -64,7 +64,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
           {/* About Us */}
           <div>
-            <h4 className="text-white font-bold mb-2 md:mb-4 text-base tracking-wide uppercase">About Us</h4>
+            <h4 className="text-white font-bold mb-2 md:mb-4 text-xs tracking-wide uppercase">About Videms</h4>
             <p className="text-xs text-gray-400 mb-2 md:mb-4 leading-relaxed">
               We design and craft premium wooden furniture to elevate your living spaces. Experience comfort, style, and durability in every piece.
             </p>
@@ -89,7 +89,7 @@ const Footer = () => {
 
           {/* Customer Service */}
           <div>
-            <h4 className="text-white font-bold mb-2 md:mb-4 text-base tracking-wide uppercase">Customer Service</h4>
+            <h4 className="text-white font-bold mb-2 md:mb-4 text-xs tracking-wide uppercase">Customer Service</h4>
             <ul className="space-y-1 md:space-y-2 text-xs text-gray-400">
               <li><Link to="/track-order" className="hover:text-brand-orange transition">Track Order</Link></li>
               <li><Link to="/returns" className="hover:text-brand-orange transition">Returns & Exchange</Link></li>
@@ -102,7 +102,7 @@ const Footer = () => {
 
           {/* Top Categories */}
           <div>
-            <h4 className="text-white font-bold mb-2 md:mb-4 text-base tracking-wide uppercase">Top Categories</h4>
+            <h4 className="text-white font-bold mb-2 md:mb-4 text-xs tracking-wide uppercase">Top Categories</h4>
             <ul className="space-y-1 md:space-y-2 text-xs text-gray-400">
               <li><Link to="/category/sofas" className="hover:text-brand-orange transition">Sofas</Link></li>
               <li><Link to="/category/beds" className="hover:text-brand-orange transition">Beds</Link></li>
@@ -114,7 +114,7 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-white font-bold mb-2 md:mb-4 text-base tracking-wide uppercase">Newsletter</h4>
+            <h4 className="text-white font-bold mb-2 md:mb-4 text-xs tracking-wide uppercase">Newsletter</h4>
             <p className="text-xs text-gray-400 mb-2 md:mb-4 leading-relaxed">
               Subscribe to our newsletter and get exclusive offers and updates directly to your inbox.
             </p>
