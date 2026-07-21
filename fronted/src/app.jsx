@@ -44,6 +44,7 @@ const ScrollToTop = () => {
 
 const App = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -89,7 +90,7 @@ const App = () => {
             </Routes>
           </Suspense>
         </main>
-        <Footer />
+        {location.pathname !== '/wishlist' && <Footer />}
         <MobileBottomNav />
       </div>
     </ErrorBoundary>

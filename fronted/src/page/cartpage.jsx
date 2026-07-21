@@ -259,26 +259,6 @@ const CartPage = () => {
           </div>
 
           <div className="lg:col-span-4 flex flex-col gap-4 md:sticky md:top-6">
-            <div className="bg-white shadow-sm rounded-2xl p-4 md:p-5 border border-gray-100 hover:border-gray-200 transition-colors duration-300">
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between cursor-pointer group">
-                  <div className="flex items-center gap-2">
-                    <Tag size={18} className="text-[#f97316] group-hover:scale-110 transition-transform duration-300" />
-                    <span className="text-sm font-medium text-gray-800"><span className="font-bold text-[#f97316]">LOGIN</span> to unlock coupons!</span>
-                  </div>
-                  <ChevronRight size={18} className="text-gray-400 group-hover:text-[#f97316] group-hover:translate-x-1 transition-all duration-300" />
-                </div>
-                {isCouponApplied && (
-                  <div className="flex items-start justify-between bg-green-50/50 p-3 md:p-4 rounded-xl border border-green-100 mt-2 transition-all duration-500 ease-in-out">
-                    <div className="flex flex-col">
-                      <span className="text-xs md:text-sm text-gray-800 font-medium">Coupon Applied: <span className="font-bold">{couponCode}</span></span>
-                      <span className="text-xs text-[#22c55e] font-medium mt-0.5">You have saved ₹{couponDiscount.toLocaleString('en-IN')}</span>
-                    </div>
-                    <button onClick={() => setIsCouponApplied(false)} className="text-xs font-bold text-[#f97316] border border-[#f97316] px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg hover:bg-orange-50 active:bg-orange-100 transition-colors duration-200 select-none !shadow-none !outline-none focus:!outline-none focus:!ring-0 focus:!ring-offset-0 focus-visible:!outline-none tracking-wide" style={{ WebkitTapHighlightColor: 'transparent', outline: 'none', boxShadow: 'none' }}>CHANGE</button>
-                  </div>
-                )}
-              </div>
-            </div>
 
             <div className="bg-white shadow-sm rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors duration-300 flex flex-col overflow-hidden">
               <div className="p-4 md:p-5 border-b border-gray-100">

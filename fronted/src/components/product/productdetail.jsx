@@ -72,7 +72,7 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
           {/* Images */}
           <div className="space-y-3">
-            <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden relative">
+            <div className="aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden relative">
               <img
                 src={
                   images[activeImage]?.url ||
@@ -112,33 +112,33 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
+                <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
                   {currentProduct.name}
                 </h1>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="flex items-center bg-green-50 px-2 py-1 rounded">
-                    <Star className="w-4 h-4 text-green-700 fill-green-700" />
-                    <span className="text-sm font-semibold text-green-700 ml-1">
+                    <Star className="w-3.5 h-3.5 text-green-700 fill-green-700" />
+                    <span className="text-xs font-semibold text-green-700 ml-1">
                       4.5
                     </span>
                   </div>
-                  <span className="text-sm text-gray-500">128 Reviews</span>
+                  <span className="text-xs text-gray-500">128 Reviews</span>
                 </div>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setIsWishlisted(!isWishlisted)}
-                  className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50"
+                  className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-0" style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <Heart
-                    className={`w-5 h-5 ${
+                    className={`w-5 h-5 transition-colors ${
                       isWishlisted
                         ? 'fill-red-500 text-red-500'
                         : 'text-gray-600'
                     }`}
                   />
                 </button>
-                <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-0" style={{ WebkitTapHighlightColor: 'transparent' }}>
                   <Share2 className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
@@ -146,15 +146,15 @@ const ProductDetail = () => {
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-gray-900">
+              <span className="text-2xl font-bold text-gray-900">
                 ₹{selectedVariant.price.toLocaleString()}
               </span>
               {selectedVariant.compare_price && (
                 <>
-                  <span className="text-lg text-gray-400 line-through">
+                  <span className="text-base text-gray-400 line-through">
                     ₹{selectedVariant.compare_price.toLocaleString()}
                   </span>
-                  <span className="text-sm font-medium text-brand-red">
+                  <span className="text-xs font-medium text-green-600">
                     Save ₹
                     {(
                       selectedVariant.compare_price - selectedVariant.price

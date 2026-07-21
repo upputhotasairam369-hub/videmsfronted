@@ -162,19 +162,19 @@ const ProductPage = () => {
           <span className="text-gray-900 truncate">{currentProduct.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10">
 
           {/* Image Carousel Section */}
-          <div className="space-y-3">
-            <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 group">
+          <div className="space-y-3 md:col-span-5">
+            <div className="relative aspect-[4/2.6] rounded-xl overflow-hidden bg-white border border-gray-200 shadow-sm group">
               {/* Horizontal Scroll Snap Container */}
               <div
                 ref={imageScrollRef}
                 onScroll={handleImageScroll}
-                className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
               >
                 {images.length > 0 ? images.map((img, idx) => (
-                  <div key={idx} className="min-w-full h-full snap-center shrink-0">
+                  <div key={idx} className="w-full flex-none h-full snap-center">
                     <img
                       src={img.url}
                       alt={`${currentProduct.name} - View ${idx + 1}`}
@@ -182,7 +182,7 @@ const ProductPage = () => {
                     />
                   </div>
                 )) : (
-                  <div className="min-w-full h-full snap-center shrink-0 flex items-center justify-center">
+                  <div className="w-full flex-none h-full snap-center flex items-center justify-center">
                     <img src="https://placehold.co/600x600/eaddd7/6f4e40?text=No+Image" alt="Placeholder" className="w-full h-full object-cover" />
                   </div>
                 )}
@@ -196,40 +196,39 @@ const ProductPage = () => {
               )}
             </div>
 
-            {/* Thumbnail Navigation */}
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => scrollToImage(idx)}
-                  className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition outline-none border-none ${idx === activeImage ? 'border-[#f97316]' : 'border-transparent'}`}
-                >
-                  <img src={img.url} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Info Section */}
-          <div className="space-y-4">
+            {/* Pagination Dots */}
+            {images.length > 1 && (
+              <div className="flex justify-center gap-2 pt-2">
+                {images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => scrollToImage(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                    className={`h-2 rounded-full transition-all outline-none border-none ${idx === activeImage ? 'bg-[#f97316] w-6' : 'bg-gray-300 hover:bg-gray-400 w-2'}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>          {/* Info Section */}
+          <div className="space-y-4 md:col-span-6">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
+                <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
                   {currentProduct.name}
                 </h1>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="flex items-center bg-green-50 px-2 py-1 rounded">
-                    <Star className="w-4 h-4 text-green-700 fill-green-700" />
-                    <span className="text-sm font-semibold text-green-700 ml-1">4.5</span>
+                    <Star className="w-3.5 h-3.5 text-green-700 fill-green-700" />
+                    <span className="text-xs font-semibold text-green-700 ml-1">4.5</span>
                   </div>
-                  <span className="text-sm text-gray-500">128 Reviews</span>
+                  <span className="text-xs text-gray-500">128 Reviews</span>
                 </div>
               </div>
               <div className="flex gap-2">
-                <button onClick={handleWishlistToggle} className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all outline-none border-none">
+                <button onClick={handleWishlistToggle} className="p-2 rounded-lg hover:bg-gray-50 transition-all focus:outline-none focus:ring-0" style={{ WebkitTapHighlightColor: 'transparent' }}>
                   <Heart className={`w-5 h-5 transition-colors ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
                 </button>
-                <button onClick={handleShare} className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 outline-none border-none">
+                <button onClick={handleShare} className="p-2 rounded-lg hover:bg-gray-50 transition-all focus:outline-none focus:ring-0" style={{ WebkitTapHighlightColor: 'transparent' }}>
                   <Share2 className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
@@ -237,15 +236,15 @@ const ProductPage = () => {
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-gray-900">
+              <span className="text-2xl font-bold text-gray-900">
                 ₹{Number(selectedVariant.price).toLocaleString('en-IN')}
               </span>
               {selectedVariant.compare_price && (
                 <>
-                  <span className="text-lg text-gray-400 line-through">
+                  <span className="text-base text-gray-400 line-through">
                     ₹{Number(selectedVariant.compare_price).toLocaleString('en-IN')}
                   </span>
-                  <span className="text-sm font-bold text-green-600">
+                  <span className="text-xs font-bold text-green-600">
                     Save ₹{(selectedVariant.compare_price - selectedVariant.price).toLocaleString('en-IN')}
                   </span>
                 </>
@@ -275,7 +274,7 @@ const ProductPage = () => {
               <button
                 onClick={() => handleAddToCart(false)}
                 disabled={isOutOfStock}
-                className={`flex-1 py-3.5 rounded-xl font-bold text-base tracking-wide transition active:scale-[0.98] outline-none border-none ${isOutOfStock ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-900 text-white hover:bg-black shadow-md'}`}
+                className={`flex-1 py-2.5 rounded-lg font-bold text-sm tracking-wide transition active:scale-[0.98] outline-none border-none ${isOutOfStock ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-900 text-white hover:bg-black shadow-md'}`}
               >
                 {isOutOfStock ? 'SOLD OUT' : 'ADD TO CART'}
               </button>
@@ -283,7 +282,7 @@ const ProductPage = () => {
               <button
                 onClick={() => handleAddToCart(true)}
                 disabled={isOutOfStock}
-                className={`flex-1 py-3.5 rounded-xl font-bold text-base tracking-wide transition active:scale-[0.98] outline-none border-none ${isOutOfStock ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#f97316] text-white hover:bg-[#e8600a] shadow-md'}`}
+                className={`flex-1 py-2.5 rounded-lg font-bold text-sm tracking-wide transition active:scale-[0.98] outline-none border-none ${isOutOfStock ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#f97316] text-white hover:bg-[#e8600a] shadow-md'}`}
               >
                 BUY NOW
               </button>

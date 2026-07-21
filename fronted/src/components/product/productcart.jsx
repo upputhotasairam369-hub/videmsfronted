@@ -34,12 +34,18 @@ const ProductCard = memo(({ product }) => {
   const availableStock = (primaryVariant?.inventory_quantity || 0) - (primaryVariant?.inventory_reserved || 0);
   const isOutOfStock = availableStock <= 0;
 
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('https://') || imagePath.startsWith('http://') || imagePath.startsWith('data:')) return imagePath;
+    return `https://videmsbackend-production.up.railway.app${imagePath}`;
+  };
+
   let displayImage = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80';
   if (product?.images?.length > 0) {
     const primaryImgObj = product.images.find(img => img.is_primary) || product.images[0];
-    displayImage = primaryImgObj?.url || primaryImgObj || displayImage;
-  } else if (product?.imageUrl || product?.image) {
-    displayImage = product.imageUrl || product.image;
+    displayImage = getImageUrl(primaryImgObj?.url || primaryImgObj || displayImage);
+  } else if (product?.imageUrl || product?.image || product?.cover_image) {
+    displayImage = getImageUrl(product.imageUrl || product.image || product.cover_image);
   }
 
   const discountPercent = safeMrp > 0 && safeMrp > safePrice ? Math.round(((safeMrp - safePrice) / safeMrp) * 100) : 0;
