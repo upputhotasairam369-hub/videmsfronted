@@ -732,7 +732,7 @@ const CheckoutPage = () => {
               <div className="max-h-60 overflow-y-auto pr-1 space-y-3 custom-scrollbar mb-4">
                 {validItems.map((item, index) => (
                   <div key={index} className="flex gap-3 text-sm items-center py-1">
-                    <img src={item.image} alt="" className="w-12 h-12 rounded-lg object-cover border border-gray-200" />
+                    <img loading="lazy" src={item.image} alt="" className="w-12 h-12 rounded-lg object-cover border border-gray-200" />
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-800 truncate">{item.name}</p>
                       <p className="text-xs text-gray-400 font-medium">Qty: {item.quantity}</p>

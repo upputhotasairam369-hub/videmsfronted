@@ -189,7 +189,7 @@ const CartPage = () => {
                     <div key={`${item.productId}_${item.variantId}_${index}`} className="group flex flex-col sm:flex-row p-4 sm:p-5 border-b border-gray-100 last:border-0 hover:bg-gray-50/80 transition-colors duration-300 ease-in-out">
                       <div className="shrink-0 mb-4 sm:mb-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-100 w-full sm:w-32 h-48 sm:h-32">
                         <Link to={`/product/${item.productId}`} className="outline-none focus:outline-none border-none select-none" style={{ WebkitTapHighlightColor: 'transparent' }}>
-                          <img src={item.image || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80'} alt={item.name || 'Product Image'} className="w-full h-full object-cover transform transition-transform duration-500 ease-out group-hover:scale-[1.04]" onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80'; }} />
+                          <img loading="lazy" src={item.image || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80'} alt={item.name || 'Product Image'} className="w-full h-full object-cover transform transition-transform duration-500 ease-out group-hover:scale-[1.04]" onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80'; }} />
                         </Link>
                       </div>
 
