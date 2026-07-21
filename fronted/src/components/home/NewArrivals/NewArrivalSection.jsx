@@ -26,6 +26,9 @@ const NewArrivalSection = () => {
           <h2 className="text-[clamp(1.25rem,3.5vw,2rem)] font-bold text-gray-900 tracking-tight">
             New Arrivals
           </h2>
+          <p className="mt-2 md:mt-3 text-[clamp(0.875rem,2vw,1.125rem)] text-gray-500 max-w-2xl mx-auto px-4">
+            Fresh designs, crafted to bring modern elegance into every home.
+          </p>
         </div>
 
         {/* Products Carousel */}
