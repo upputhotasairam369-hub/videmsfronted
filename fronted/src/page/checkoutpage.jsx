@@ -217,11 +217,15 @@ const CheckoutPage = () => {
             const fetchedCity = address.city || address.town || address.village || address.state_district || '';
             const fetchedState = address.state || '';
 
-            const colony = address.suburb || address.neighbourhood || address.residential || address.village || '';
-            const city = address.city || address.town || address.state_district || '';
+            // Generate the exact full descriptive address string like Flipkart (using Nominatim's display_name)
+            let fullAddress = data.display_name || '';
+            
+            // Remove the country from the end to match the exact requested format
+            if (address.country && fullAddress.endsWith(', ' + address.country)) {
+              fullAddress = fullAddress.slice(0, -(address.country.length + 2));
+            }
 
-            // Auto fill Address Line 2 with Colony and City of the Pin code
-            const fetchedAddress2 = [colony, city].filter(Boolean).join(', ');
+            const fetchedAddress2 = fullAddress.trim();
             
             // Address Line 1 should be filled by the user for precise house/flat number
             const fetchedAddress1 = '';
