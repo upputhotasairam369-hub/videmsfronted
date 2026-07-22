@@ -176,14 +176,6 @@ const AllProductsPage = () => {
         setPage(1);
     };
 
-    const getDisplayCategory = () => {
-        if (selectedSubcategory) return selectedSubcategory;
-        if (selectedCategory === 'all') return 'All Products';
-        return selectedCategory.split(' ')
-            .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-            .join(' ');
-    };
-
     // ── Error state ──
     if (error) {
         return (
@@ -317,7 +309,7 @@ const AllProductsPage = () => {
             {/* ── Page header ── */}
             <div className="bg-white border-b border-gray-100 py-6 md:py-8">
                 <div className="container mx-auto px-4">
-                    <div className="mb-4">
+                    <div className="mb-4 hidden md:block">
                         <button
                             onClick={() => navigate('/')}
                             className="text-gray-400 text-sm hover:text-gray-800 transition-colors flex items-center gap-1.5
@@ -327,17 +319,7 @@ const AllProductsPage = () => {
                             <span>←</span> Back to Home
                         </button>
                     </div>
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                        <div>
-                            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 tracking-tight">
-                                {getDisplayCategory()}
-                            </h1>
-                            <p className="text-gray-400 text-sm md:text-base font-medium select-none">
-                                Showing {paginatedProducts.length > 0 ? startIdx + 1 : 0}–
-                                {startIdx + paginatedProducts.length} of {sortedProducts.length} products
-                            </p>
-                        </div>
-
+                    <div className="flex flex-col md:flex-row md:items-end justify-end gap-4">
                         {/* Mobile filter toggle */}
                         <button
                             onClick={() => setIsMobileFiltersOpen(true)}

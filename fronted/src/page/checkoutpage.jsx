@@ -659,8 +659,8 @@ const CheckoutPage = () => {
                 </div>
               </form>
             ) : (
-              <div className="bg-white shadow-sm rounded-2xl p-6 border border-gray-100 space-y-6 animate-fade-in">
-                <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+              <div className="bg-white shadow-sm rounded-2xl p-5 border border-gray-100 space-y-4 animate-fade-in">
+                <div className="flex justify-between items-center pb-3 border-b border-gray-100">
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">Payment Gateway Selection</h2>
                     <p className="text-xs text-gray-500">All connections are end-to-end encrypted under financial secure sockets layer.</p>
@@ -668,7 +668,7 @@ const CheckoutPage = () => {
                   <button onClick={() => setStep(1)} className="text-xs font-bold text-[#e87831] hover:underline">Edit Shipping Info</button>
                 </div>
 
-                <div className="bg-orange-50/50 border border-orange-100 rounded-xl p-4 text-sm text-gray-700 flex gap-3">
+                <div className="bg-orange-50/50 border border-orange-100 rounded-lg p-3 text-sm text-gray-700 flex gap-3">
                   <ShieldCheck className="text-[#e87831] shrink-0" size={20} />
                   <div>
                     <p className="font-semibold text-gray-900">Delivery destination locked:</p>
@@ -681,7 +681,7 @@ const CheckoutPage = () => {
 
                 <div
                   onClick={() => setPaymentMethod('razorpay')}
-                  className={`p-4 border rounded-xl flex items-center gap-4 cursor-pointer transition-all ${paymentMethod === 'razorpay' ? 'border-[#e87831] bg-orange-50/20 ring-1 ring-[#e87831]' : 'border-gray-200 hover:bg-gray-50/50'}`}
+                  className={`p-3 border rounded-lg flex items-center gap-3 cursor-pointer transition-all ${paymentMethod === 'razorpay' ? 'border-[#e87831] bg-orange-50/20 ring-1 ring-[#e87831]' : 'border-gray-200 hover:bg-gray-50/50'}`}
                 >
                   <div className={`w-4 h-4 rounded-full border-4 flex items-center justify-center ${paymentMethod === 'razorpay' ? 'border-[#e87831] bg-white' : 'border-gray-300'}`} />
                   <div className="flex-1">
@@ -692,7 +692,7 @@ const CheckoutPage = () => {
 
                 <div
                   onClick={() => setPaymentMethod('cod')}
-                  className={`p-4 border rounded-xl flex items-center gap-4 cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-[#e87831] bg-orange-50/20 ring-1 ring-[#e87831]' : 'border-gray-200 hover:bg-gray-50/50'}`}
+                  className={`p-3 border rounded-lg flex items-center gap-3 cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-[#e87831] bg-orange-50/20 ring-1 ring-[#e87831]' : 'border-gray-200 hover:bg-gray-50/50'}`}
                 >
                   <div className={`w-4 h-4 rounded-full border-4 flex items-center justify-center ${paymentMethod === 'cod' ? 'border-[#e87831] bg-white' : 'border-gray-300'}`} />
                   <div className="flex-1">
@@ -702,7 +702,7 @@ const CheckoutPage = () => {
                 </div>
 
                 {paymentMethod === 'cod' && (
-                  <div className="p-5 bg-gray-50 border border-gray-200 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in text-sm text-gray-700">
+                  <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in text-sm text-gray-700">
                     <div className="flex gap-2.5 items-start">
                       <DollarSign className="text-gray-500 shrink-0 mt-0.5" size={16} />
                       <div>
@@ -727,16 +727,18 @@ const CheckoutPage = () => {
                   </div>
                 )}
 
-                <button onClick={handlePlaceOrder} disabled={loadingPayment} className="w-full bg-[#e87831] text-white py-4 rounded-xl font-bold tracking-wider hover:bg-[#cf6627] transition-all duration-300 shadow-md flex items-center justify-center gap-2">
-                  {loadingPayment ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      <span>PROCESSING SECURE ORDER...</span>
-                    </>
-                  ) : (
-                    <span>{paymentMethod === 'cod' ? 'PLACE CASH ON DELIVERY ORDER' : `CONFIRM AND PAY ₹${totalPayable.toLocaleString('en-IN')}`}</span>
-                  )}
-                </button>
+                <div className="pt-2">
+                  <button onClick={handlePlaceOrder} disabled={loadingPayment} className="w-full bg-[#e87831] text-white py-2.5 rounded-lg text-sm font-semibold tracking-wide hover:bg-[#cf6627] transition-all duration-300 shadow-md flex items-center justify-center gap-2">
+                    {loadingPayment ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>PROCESSING SECURE ORDER...</span>
+                      </>
+                    ) : (
+                      <span>{paymentMethod === 'cod' ? 'PLACE CASH ON DELIVERY ORDER' : `CONFIRM AND PAY ₹${totalPayable.toLocaleString('en-IN')}`}</span>
+                    )}
+                  </button>
+                </div>
               </div>
             )}
           </div>
