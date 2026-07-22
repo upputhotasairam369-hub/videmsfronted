@@ -217,15 +217,20 @@ const CheckoutPage = () => {
             const fetchedCity = address.city || address.town || address.village || address.state_district || '';
             const fetchedState = address.state || '';
 
-            // Generate the exact full descriptive address string like Flipkart (using Nominatim's display_name)
-            let fullAddress = data.display_name || '';
-            
-            // Remove the country from the end to match the exact requested format
-            if (address.country && fullAddress.endsWith(', ' + address.country)) {
-              fullAddress = fullAddress.slice(0, -(address.country.length + 2));
-            }
+            // Generate a clean, Flipkart-style address by extracting only the relevant, consumer-friendly fields
+            const road = address.road || address.street || address.pedestrian || '';
+            const neighbourhood = address.neighbourhood || address.residential || address.suburb || address.village || '';
+            const city = address.city || address.town || '';
+            const district = address.state_district || address.county || '';
+            const state = address.state || '';
+            const pincode = address.postcode || '';
 
-            const fetchedAddress2 = fullAddress.trim();
+            // Filter out junk administrative data and combine the relevant parts
+            const cleanParts = [road, neighbourhood, city, district, state, pincode].filter(Boolean);
+            
+            // Remove duplicates (e.g. if city and district have the same name)
+            const uniqueParts = [...new Set(cleanParts)];
+            const fetchedAddress2 = uniqueParts.join(', ').trim();
             
             // Address Line 1 should be filled by the user for precise house/flat number
             const fetchedAddress1 = '';
