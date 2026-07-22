@@ -31,8 +31,11 @@ const getHardwareGPSLock = (onSuccess, onError) => {
     return;
   }
 
-  // Directly request high-accuracy device location.
-  // This natively triggers the OS-level permission prompt on mobile and waits.
+  // Detect if the user is on a mobile device to force hardware GPS.
+  // Laptops/Desktops use WiFi positioning which is highly accurate and faster without highAccuracy mode.
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  // Directly request device location based on the best available sensor.
   navigator.geolocation.getCurrentPosition(
     (position) => {
       onSuccess(position);
@@ -41,9 +44,9 @@ const getHardwareGPSLock = (onSuccess, onError) => {
       onError(error);
     },
     {
-      enableHighAccuracy: true,
-      timeout: 30000, // 30 seconds to allow the user time to accept the permission prompt
-      maximumAge: 0   // Force live hardware GPS reading
+      enableHighAccuracy: isMobile, // True for mobile GPS, False for Laptop WiFi/IP location
+      timeout: 30000, 
+      maximumAge: 0   
     }
   );
 };
@@ -214,16 +217,14 @@ const CheckoutPage = () => {
             const fetchedCity = address.city || address.town || address.village || address.state_district || '';
             const fetchedState = address.state || '';
 
-            const building = address.building || address.amenity || address.shop || '';
-            const streetNumber = address.house_number || '';
-            const route = address.road || address.street || address.pedestrian || '';
-            const neighbourhood = address.neighbourhood || address.residential || address.suburb || '';
+            const colony = address.suburb || address.neighbourhood || address.residential || address.village || '';
+            const city = address.city || address.town || address.state_district || '';
 
-            const parts = [building, streetNumber, route, neighbourhood].filter(Boolean);
-            const fetchedAddress1 = parts.length > 0 ? parts.join(', ') : (data.display_name ? data.display_name.split(',').slice(0, 3).join(', ') : '');
-
-            const sublocality = address.suburb || address.city_district || '';
-            const fetchedAddress2 = sublocality;
+            // Auto fill Address Line 2 with Colony and City of the Pin code
+            const fetchedAddress2 = [colony, city].filter(Boolean).join(', ');
+            
+            // Address Line 1 should be filled by the user for precise house/flat number
+            const fetchedAddress1 = '';
 
             setShipping(prev => ({
               ...prev,
@@ -231,7 +232,7 @@ const CheckoutPage = () => {
               city: fetchedCity,
               state: fetchedState,
               address2: fetchedAddress2,
-              address1: fetchedAddress1 ? fetchedAddress1 : prev.address1
+              address1: '' // Enforce manual entry of Address Line 1
             }));
 
             setErrors(prev => {
@@ -239,7 +240,7 @@ const CheckoutPage = () => {
               if (fetchedPincode) delete newErrors.shipping_pincode;
               if (fetchedCity) delete newErrors.shipping_city;
               if (fetchedState) delete newErrors.shipping_state;
-              if (fetchedAddress1) delete newErrors.shipping_address1;
+              // Do NOT delete shipping_address1 error since we want the user to type it manually
               return newErrors;
             });
           } else {
