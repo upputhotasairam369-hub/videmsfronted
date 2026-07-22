@@ -217,23 +217,24 @@ const CheckoutPage = () => {
             const fetchedCity = address.city || address.town || address.village || address.state_district || '';
             const fetchedState = address.state || '';
 
-            // Generate a clean, Flipkart-style address by extracting only the relevant, consumer-friendly fields
+            // Generate a clean, Flipkart-style address by extracting all available granular fields in strict priority order
+            const house_number = address.house_number || '';
             const road = address.road || address.street || address.pedestrian || '';
-            const neighbourhood = address.neighbourhood || address.residential || address.suburb || address.village || '';
+            const neighbourhood = address.neighbourhood || address.residential || '';
+            const suburb = address.suburb || address.village || '';
+            const locality = address.locality || '';
             const city = address.city || address.town || '';
             const district = address.state_district || address.county || '';
             const state = address.state || '';
             const pincode = address.postcode || '';
 
-            // Filter out junk administrative data and combine the relevant parts
-            const cleanParts = [road, neighbourhood, city, district, state, pincode].filter(Boolean);
+            // Combine the relevant parts, strictly avoiding mutually exclusive '||' fallbacks for distinct administrative levels
+            const address1Parts = [house_number, road].filter(Boolean);
+            const address2Parts = [neighbourhood, suburb, locality, city, district, state, pincode].filter(Boolean);
             
-            // Remove duplicates (e.g. if city and district have the same name)
-            const uniqueParts = [...new Set(cleanParts)];
-            const fetchedAddress2 = uniqueParts.join(', ').trim();
-            
-            // Address Line 1 should be filled by the user for precise house/flat number
-            const fetchedAddress1 = '';
+            // Remove adjacent duplicates to prevent redundancy (e.g., if city and district have the same name)
+            const fetchedAddress1 = address1Parts.filter((item, pos, arr) => pos === 0 || item !== arr[pos - 1]).join(', ').trim();
+            const fetchedAddress2 = address2Parts.filter((item, pos, arr) => pos === 0 || item !== arr[pos - 1]).join(', ').trim();
 
             setShipping(prev => ({
               ...prev,
@@ -241,7 +242,7 @@ const CheckoutPage = () => {
               city: fetchedCity,
               state: fetchedState,
               address2: fetchedAddress2,
-              address1: '' // Enforce manual entry of Address Line 1
+              address1: fetchedAddress1 || prev.address1
             }));
 
             setErrors(prev => {
@@ -249,7 +250,7 @@ const CheckoutPage = () => {
               if (fetchedPincode) delete newErrors.shipping_pincode;
               if (fetchedCity) delete newErrors.shipping_city;
               if (fetchedState) delete newErrors.shipping_state;
-              // Do NOT delete shipping_address1 error since we want the user to type it manually
+              if (fetchedAddress1) delete newErrors.shipping_address1;
               return newErrors;
             });
           } else {
