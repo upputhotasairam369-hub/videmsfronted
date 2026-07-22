@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Heart, ShoppingCart, Trash2, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { useWishlist } from '../hooks/useWishlist';
 import { useCart } from '../hooks/usecart';
+import { getImageUrl } from '../utils/helper';
 
 const WishlistPage = () => {
     const navigate = useNavigate();
@@ -132,7 +133,7 @@ const WishlistPage = () => {
 
                                     <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden cursor-pointer" onClick={() => navigate(`/product/${item.productId}`)}>
                                         <img
-                                            src={item.image || 'https://placehold.co/600x400?text=Image'}
+                                            src={getImageUrl(item.image)}
                                             alt={item.name}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                                         />

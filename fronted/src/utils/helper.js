@@ -32,3 +32,9 @@ export const debounce = (func, wait) => {
     timeout = setTimeout(later, wait);
   };
 };
+
+export const getImageUrl = (imagePath) => {
+  if (!imagePath) return 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80';
+  if (imagePath.startsWith('https://') || imagePath.startsWith('http://') || imagePath.startsWith('data:')) return imagePath;
+  return `https://videmsbackend-production.up.railway.app${imagePath}`;
+};

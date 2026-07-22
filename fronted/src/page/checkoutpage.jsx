@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useCart } from '../hooks/usecart';
 import { AlertTriangle, Loader2, ShieldCheck, Lock, Truck, Calendar, DollarSign, LocateFixed } from 'lucide-react';
 import { orderAPI } from '../services/api';
+import { getImageUrl } from '../utils/helper';
 
 // ========================================================
 // 🚀 1. DYNAMIC SCRIPT LOADERS
@@ -213,11 +214,15 @@ const CheckoutPage = () => {
             const fetchedCity = address.city || address.town || address.village || address.state_district || '';
             const fetchedState = address.state || '';
 
+            const building = address.building || address.amenity || address.shop || '';
             const streetNumber = address.house_number || '';
-            const route = address.road || '';
-            const fetchedAddress1 = [streetNumber, route].filter(Boolean).join(', ');
+            const route = address.road || address.street || address.pedestrian || '';
+            const neighbourhood = address.neighbourhood || address.residential || address.suburb || '';
 
-            const sublocality = address.suburb || address.neighbourhood || address.residential || '';
+            const parts = [building, streetNumber, route, neighbourhood].filter(Boolean);
+            const fetchedAddress1 = parts.length > 0 ? parts.join(', ') : (data.display_name ? data.display_name.split(',').slice(0, 3).join(', ') : '');
+
+            const sublocality = address.suburb || address.city_district || '';
             const fetchedAddress2 = sublocality;
 
             setShipping(prev => ({
@@ -486,9 +491,9 @@ const CheckoutPage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-9 space-y-6">
             {step === 1 ? (
               <form onSubmit={handleContinueToPayment} className="bg-white shadow-sm rounded-2xl p-6 border border-gray-100 space-y-6">
 
@@ -502,7 +507,7 @@ const CheckoutPage = () => {
                     type="button"
                     onClick={handleUseCurrentLocation}
                     disabled={loadingLocation}
-                    className="flex items-center justify-center gap-2 bg-orange-50 text-[#e87831] border border-orange-200 hover:bg-orange-100 px-4 py-2.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 outline-none"
+                    className="flex items-center justify-center gap-1.5 bg-orange-50 text-[#e87831] border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 outline-none"
                   >
                     {loadingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : <LocateFixed className="w-4 h-4" />}
                     {loadingLocation ? "Acquiring GPS Lock..." : "Use Current Location"}
@@ -637,7 +642,7 @@ const CheckoutPage = () => {
                 </div>
 
                 <div className="pt-4">
-                  <button type="submit" className="w-full bg-[#e87831] text-white py-4 rounded-xl font-bold tracking-wider hover:bg-[#cf6627] transition-all duration-300 shadow-md">
+                  <button type="submit" className="w-full bg-[#e87831] text-white py-2.5 rounded-lg text-sm font-semibold tracking-wide hover:bg-[#cf6627] transition-all duration-300 shadow-md">
                     SAVE AND CONTINUE TO PAYMENT
                   </button>
                 </div>
@@ -725,14 +730,14 @@ const CheckoutPage = () => {
             )}
           </div>
 
-          <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-6">
-            <div className="bg-white shadow-sm rounded-2xl p-5 border border-gray-100">
-              <h3 className="text-base font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Order Summary</h3>
+          <div className="lg:col-span-3 space-y-4 lg:sticky lg:top-6">
+            <div className="bg-white shadow-sm rounded-xl p-4 border border-gray-100">
+              <h3 className="text-sm font-bold text-gray-900 mb-3 pb-2 border-b border-gray-100">Order Summary</h3>
 
-              <div className="max-h-60 overflow-y-auto pr-1 space-y-3 custom-scrollbar mb-4">
+              <div className="max-h-52 overflow-y-auto pr-1 space-y-2 custom-scrollbar mb-3">
                 {validItems.map((item, index) => (
-                  <div key={index} className="flex gap-3 text-sm items-center py-1">
-                    <img loading="lazy" src={item.image} alt="" className="w-12 h-12 rounded-lg object-cover border border-gray-200" />
+                  <div key={index} className="flex gap-2 text-xs items-center py-1">
+                    <img loading="lazy" src={getImageUrl(item.image)} alt="" className="w-10 h-10 rounded-md object-cover border border-gray-200" />
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-800 truncate">{item.name}</p>
                       <p className="text-xs text-gray-400 font-medium">Qty: {item.quantity}</p>
