@@ -21,8 +21,8 @@ const LoginPage = () => {
 
   const from = location.state?.from?.pathname || '/';
   
-  // Use REACT_APP_GOOGLE_CLIENT_ID from env
-  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
+  // Use REACT_APP_GOOGLE_CLIENT_ID from env or fallback to the correct client ID if deployed to Vercel without env vars
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "35112506714-6tn1eei86r6hf2aibhddtc00l26luc9a.apps.googleusercontent.com";
 
   useEffect(() => {
     if (isAuthenticated && user) {
