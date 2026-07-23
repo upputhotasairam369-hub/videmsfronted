@@ -20,7 +20,7 @@ const LoginPage = () => {
   });
 
   const from = location.state?.from?.pathname || '/';
-  
+
   // Use REACT_APP_GOOGLE_CLIENT_ID from env or fallback to the correct client ID if deployed to Vercel without env vars
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "35112506714-6tn1eei86r6hf2aibhddtc00l26luc9a.apps.googleusercontent.com";
 
@@ -135,7 +135,7 @@ const LoginPage = () => {
                 width="100%"
               />
             </div>
-            
+
             <div className="relative flex items-center py-2">
               <div className="flex-grow border-t border-gray-200"></div>
               <span className="flex-shrink-0 mx-4 text-gray-400 text-xs font-semibold uppercase">Or continue with email</span>
@@ -174,9 +174,9 @@ const LoginPage = () => {
                 <Loader className="w-6 h-6 animate-spin text-[#f97316]" />
               </div>
             )}
-            
+
             {error && <p className="text-sm text-red-600 text-center font-medium mt-4">{error}</p>}
-            
+
           </div>
         </div>
       </div>
